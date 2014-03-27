@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sy:switchyard xmlns:bean="urn:switchyard-component-bean:config:1.1" xmlns:resteasy="urn:switchyard-component-resteasy:config:1.1" xmlns:sca="http://docs.oasis-open.org/ns/opencsa/sca/200912" xmlns:sy="urn:switchyard-config:switchyard:1.1" name="CAMCoF" targetNamespace="urn:com.example.switchyard:CAMCoF:1.0">
+  <sca:composite name="CAMCoF" targetNamespace="urn:com.example.switchyard:CAMCoF:1.0">
+    <sca:service name="CommunicationService" promote="ReadDataServiceBean/ReadDataService">
+      <sca:interface.java interface="com.example.switchyard.CAMCoF.CommunicationService"/>
+      <resteasy:binding.rest>
+        <resteasy:interfaces>com.example.switchyard.CAMCoF.CommunicationServiceResource</resteasy:interfaces>
+        <resteasy:contextPath>CAMCoF</resteasy:contextPath>
+      </resteasy:binding.rest>
+    </sca:service>
+    <sca:component name="ReadDataServiceBean">
+      <bean:implementation.bean class="com.example.switchyard.CAMCoF.ReadDataServiceBean"/>
+      <sca:service name="ReadDataService">
+        <sca:interface.java interface="com.example.switchyard.CAMCoF.ReadDataService"/>
+      </sca:service>
+    </sca:component>
+  </sca:composite>
+</sy:switchyard>
