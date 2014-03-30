@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<sy:switchyard xmlns:bean="urn:switchyard-component-bean:config:1.1" xmlns:resteasy="urn:switchyard-component-resteasy:config:1.1" xmlns:sca="http://docs.oasis-open.org/ns/opencsa/sca/200912" xmlns:sy="urn:switchyard-config:switchyard:1.1" name="CAMCoF" targetNamespace="urn:com.example.switchyard:CAMCoF:1.0">
+<sy:switchyard xmlns:bean="urn:switchyard-component-bean:config:1.1" xmlns:bpm="urn:switchyard-component-bpm:config:1.1" xmlns:quartz="urn:switchyard-component-camel-quartz:config:1.1" xmlns:resteasy="urn:switchyard-component-resteasy:config:1.1" xmlns:sca="http://docs.oasis-open.org/ns/opencsa/sca/200912" xmlns:sy="urn:switchyard-config:switchyard:1.1" name="CAMCoF" targetNamespace="urn:com.example.switchyard:CAMCoF:1.0">
   <sca:composite name="CAMCoF" targetNamespace="urn:com.example.switchyard:CAMCoF:1.0">
-    <sca:service name="CommunicationService" promote="ReadDataServiceBean/ReadDataService">
-      <sca:interface.java interface="com.example.switchyard.CAMCoF.CommunicationService"/>
+    <sca:service name="EndPointService" promote="ReadDataServiceBean/ReadDataService">
+      <sca:interface.java interface="com.example.switchyard.CAMCoF.CommunicationServices.EndPointService"/>
       <resteasy:binding.rest>
-        <resteasy:interfaces>com.example.switchyard.CAMCoF.CommunicationServiceResource</resteasy:interfaces>
+        <resteasy:messageComposer class="com.example.switchyard.CAMCoF.CommunicationServices.CustomComposer"/>
+        <resteasy:interfaces>com.example.switchyard.CAMCoF.CommunicationServices.EndPointServiceResource</resteasy:interfaces>
         <resteasy:contextPath>CAMCoF</resteasy:contextPath>
       </resteasy:binding.rest>
+      <quartz:binding.quartz name="CAMCoFping">
+        <sy:operationSelector operationName="camcofPing"/>
+        <quartz:name>CAMCoFping</quartz:name>
+        <quartz:cron>0 0/5 0-23 ? * MON-SUN</quartz:cron>
+      </quartz:binding.quartz>
     </sca:service>
     <sca:component name="ReadDataServiceBean">
-      <bean:implementation.bean class="com.example.switchyard.CAMCoF.ReadDataServiceBean"/>
+      <bean:implementation.bean class="com.example.switchyard.CAMCoF.CommunicationServices.ReadDataServiceBean"/>
       <sca:service name="ReadDataService">
-        <sca:interface.java interface="com.example.switchyard.CAMCoF.ReadDataService"/>
+        <sca:interface.java interface="com.example.switchyard.CAMCoF.CommunicationServices.ReadDataService"/>
       </sca:service>
     </sca:component>
   </sca:composite>
