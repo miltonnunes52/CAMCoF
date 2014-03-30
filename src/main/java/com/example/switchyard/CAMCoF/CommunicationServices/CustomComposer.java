@@ -33,9 +33,9 @@ public class CustomComposer extends RESTEasyMessageComposer {
     @Override
     public Message compose(RESTEasyBindingData source, Exchange exchange) throws Exception {
         final Message message = super.compose(source, exchange);
-        if (source.getOperationName().equals("receiveData") && (source.getParameters().length == 2)) {
+        if (source.getOperationName().equals("receiveData") && (source.getParameters().length == 3)) {
             // Wrap the parameters
-            DataObject data = new DataObject((String)source.getParameters()[0], (String)source.getParameters()[1]);
+            DataObject data = new DataObject((String)source.getParameters()[0], (String)source.getParameters()[1], (String)source.getParameters()[2]);
             message.setContent(data);
         }
         return message;

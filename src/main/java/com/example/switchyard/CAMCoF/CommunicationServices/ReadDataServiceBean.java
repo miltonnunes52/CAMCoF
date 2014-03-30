@@ -14,18 +14,22 @@ public class ReadDataServiceBean implements ReadDataService {
 
 	@Override
 	public DataResponse receiveData(DataObject dataObject){
+		DataResponse response;
 		
-		//um if para confirmar que os dados vem de um serviço connectado
-		//else resposta a mandar foder
-		System.out.println(dataObject.getId() + " " + dataObject.getData());
+		System.out.println(dataObject.getId() + " " + dataObject.getType() + " " + dataObject.getData());
 		
-		DataResponse response = new DataResponse("200");
+		if(existSensorService(dataObject.getId(), dataObject.getType())){
+			response = new DataResponse("200 - Accepted");	
+		}
+		else{
+			response = new DataResponse("403 - Forbidden");
+		}
+		
 		return response;		
 	}
 
 	
 
-	//Alterar comparação do serviço recebido com os existentes
 	@Override
 	public SensorServiceResponse connectService(SensorService sensorService) {
 		SensorServiceResponse serviceResponse;
@@ -36,7 +40,7 @@ public class ReadDataServiceBean implements ReadDataService {
 			System.out.println("conflict 409");
 		}
 		else{
-			serviceResponse = new SensorServiceResponse("200", "islab.di.uminho.pt/CAMCoF/send/data");
+			serviceResponse = new SensorServiceResponse("200", "islab.di.uminho.pt/CAMCoF/send/" + sensorService.getId() + "/" + sensorService.getType());
 			serviceList.add(sensorService);
 			printServicesList();
 
@@ -68,6 +72,15 @@ public class ReadDataServiceBean implements ReadDataService {
 		return false;		
 	}
 	
+	//Compara serviços mac address e tipo de sensor com existentes
+	public boolean existSensorService(String id, String type){
+		for (SensorService s : serviceList) {
+	        if (s.getId().equals(id) && s.getType().equals(type)) {
+	            return true;
+	        }
+	    }
+		return false;		
+	}
 	
 	public void printServicesList(){
 		System.out.println("lista de servicos");

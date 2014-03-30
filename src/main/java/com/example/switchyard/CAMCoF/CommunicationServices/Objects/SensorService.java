@@ -7,14 +7,16 @@ public class SensorService {
 	private String type;
 	private int period;
 	private String typedata;
+	private String description;
 	
 	public SensorService(String id, String ip, String type, int period,
-			String typedata) {
+			String typedata, String description) {
 		this.id = id;
 		this.ip = ip;
 		this.type = type;
 		this.period = period;
 		this.typedata = typedata;
+		this.description = description;
 	}
 
 	public SensorService(){
@@ -27,6 +29,7 @@ public class SensorService {
 		this.type = service.getType();
 		this.period = service.getPeriod();
 		this.typedata = service.getTypedata();
+		this.description = service.getDescription();
 	}
 	
 	public String getId() {
@@ -67,6 +70,14 @@ public class SensorService {
 
 	public void setTypedata(String typedata) {
 		this.typedata = typedata;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 	

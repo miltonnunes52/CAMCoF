@@ -3,10 +3,12 @@ package com.example.switchyard.CAMCoF.CommunicationServices.Objects;
 public class DataObject {
 	
 	private String id;
+	private String type;
 	private String data;
 	
-	public DataObject(String id, String data) {
+	public DataObject(String id, String type, String data) {
 		this.id = id;
+		this.type = type;
 		this.data = data;
 	}
 
@@ -16,6 +18,7 @@ public class DataObject {
 	
 	public DataObject(DataObject dataObject){
 		this.id = dataObject.getId();
+		this.type = dataObject.getType();
 		this.data = dataObject.getData();
 		
 	}
@@ -37,6 +40,13 @@ public class DataObject {
 		this.id = id;
 	}
 	
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.id = type;
+	}
 	
 	
 }
