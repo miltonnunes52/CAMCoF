@@ -1,6 +1,13 @@
 
 package com.example.switchyard.CAMCoF.CommunicationServices;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import com.example.switchyard.CAMCoF.CommunicationServices.Objects.*;
@@ -53,10 +60,70 @@ public class ReadDataServiceBean implements ReadDataService {
 	//periodicamente verifica quem está connectado
 	@Override
 	public void camcofPing(){
-		System.out.println("ping");
+
+		String targetURL = "http://127.0.0.1:8080/CAMCoF/send/teste";
+
+		//METER AQUI O CICLO PARA PERCORRER TODOS OS SERVIÇOS
+		//E meter o que recebe tb num objecto e validar a resposta, eliminando serviços inactivos
+		
+		try {
+
+			URL targetUrl = new URL(targetURL);
+
+			HttpURLConnection httpConnection = (HttpURLConnection) targetUrl.openConnection();
+			httpConnection.setDoOutput(true);
+			httpConnection.setRequestMethod("POST");
+			httpConnection.setRequestProperty("Content-Type", "application/json");
+
+			StatusRequest statusRequest = new StatusRequest("id", "type", "request");
+			
+			
+			OutputStream outputStream = httpConnection.getOutputStream();
+
+			
+			
+			outputStream.write(statusRequest.toString().getBytes());
+			outputStream.flush();
+			
+
+			if (httpConnection.getResponseCode() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : "
+					+ httpConnection.getResponseCode());
+			}
+
+			BufferedReader responseBuffer = new BufferedReader(new InputStreamReader(
+					(httpConnection.getInputStream())));
+
+			
+			String output;
+			System.out.println("Output from Server:");
+			while ((output = responseBuffer.readLine()) != null) {
+				System.out.println(output);
+			}
+
+			httpConnection.disconnect();
+
+		  } catch (MalformedURLException e) {
+
+			e.printStackTrace();
+
+		  } catch (IOException e) {
+
+			e.printStackTrace();
+
+		 }
+
+	}	 	
+	
+	
+	//resposta temporaria ao ping
+	@Override
+	public StatusResponse camcofPongProvisorio(StatusRequest statusRequest){
+
+		System.out.println(statusRequest.getId() + " " + statusRequest.getStatus()  + " " + statusRequest.getType());
+		return new StatusResponse(statusRequest.getId(), statusRequest.getType(), "200");
 		
 	}
-	
 	
 	
 	//Funções auxiliares

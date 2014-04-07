@@ -32,6 +32,12 @@ public interface EndPointServiceResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	SensorServiceResponse connectService(SensorService sensorService);
+	
+	@POST
+	@Path("/teste")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	StatusResponse camcofPongProvisorio(StatusRequest statusRequest);
 
 
 

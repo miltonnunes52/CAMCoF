@@ -9,6 +9,8 @@ public interface EndPointService {
 	SensorServiceResponse connectService(SensorService sensorService);
 	DataResponse receiveData(DataObject dataObject);
 	void camcofPing();
+	StatusResponse camcofPongProvisorio(StatusRequest statusRequest);
+
 	
 	
 
