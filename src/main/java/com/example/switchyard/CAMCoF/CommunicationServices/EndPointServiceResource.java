@@ -39,6 +39,11 @@ public interface EndPointServiceResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	StatusResponse camcofPongProvisorio(StatusRequest statusRequest);
 
+	@POST
+	@Path("/teste1")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	StatusResponse camcofPongProvisorio1(StatusRequest statusRequest);
 
 
 }

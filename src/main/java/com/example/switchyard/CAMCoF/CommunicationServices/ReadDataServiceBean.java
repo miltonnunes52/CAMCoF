@@ -10,6 +10,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
+import org.codehaus.jackson.map.ObjectMapper;
+
 import com.example.switchyard.CAMCoF.CommunicationServices.Objects.*;
 
 import org.switchyard.component.bean.Service;
@@ -61,57 +63,65 @@ public class ReadDataServiceBean implements ReadDataService {
 	@Override
 	public void camcofPing(){
 
-		String targetURL = "http://127.0.0.1:8080/CAMCoF/send/teste";
-
-		//METER AQUI O CICLO PARA PERCORRER TODOS OS SERVIÇOS
-		//E meter o que recebe tb num objecto e validar a resposta, eliminando serviços inactivos
+		for(int k=0; k<serviceList.size(); k++) {
+			 
 		
-		try {
+			String targetURL = serviceList.get(k).getIp();
+			//String targetURL = "http://127.0.0.1:8080/CAMCoF/send/teste";
 
-			URL targetUrl = new URL(targetURL);
+		
+			try {
 
-			HttpURLConnection httpConnection = (HttpURLConnection) targetUrl.openConnection();
-			httpConnection.setDoOutput(true);
-			httpConnection.setRequestMethod("POST");
-			httpConnection.setRequestProperty("Content-Type", "application/json");
-
-			StatusRequest statusRequest = new StatusRequest("id", "type", "request");
+				URL targetUrl = new URL(targetURL);
+				HttpURLConnection httpConnection = (HttpURLConnection) targetUrl.openConnection();
+				httpConnection.setDoOutput(true);
+				httpConnection.setRequestMethod("POST");
+				httpConnection.setRequestProperty("Content-Type", "application/json");
+				httpConnection.setConnectTimeout(10000);
+				httpConnection.setReadTimeout(10000);
 			
+				StatusRequest statusRequest = new StatusRequest(serviceList.get(k).getId(), serviceList.get(k).getType(), "status");
 			
-			OutputStream outputStream = httpConnection.getOutputStream();
+				OutputStream outputStream = httpConnection.getOutputStream();
+			
+				outputStream.write(statusRequest.toString().getBytes());
+				outputStream.flush();
 
-			
-			
-			outputStream.write(statusRequest.toString().getBytes());
-			outputStream.flush();
-			
+				if (httpConnection.getResponseCode() != 200) {
+					serviceList.remove(serviceList.get(k));	
+					k--;
+					System.out.println("serviço eliminado " + "Failed : HTTP error code : "
+							+ httpConnection.getResponseCode());
+					continue;
+					
+				}
 
-			if (httpConnection.getResponseCode() != 200) {
-				throw new RuntimeException("Failed : HTTP error code : "
-					+ httpConnection.getResponseCode());
-			}
-
-			BufferedReader responseBuffer = new BufferedReader(new InputStreamReader(
+				BufferedReader responseBuffer = new BufferedReader(new InputStreamReader(
 					(httpConnection.getInputStream())));
 
 			
-			String output;
-			System.out.println("Output from Server:");
-			while ((output = responseBuffer.readLine()) != null) {
-				System.out.println(output);
-			}
+				String output;
+				StatusResponse statusResponse = new StatusResponse();
+				System.out.println("Output from Server:");
+				while ((output = responseBuffer.readLine()) != null) {
+					statusResponse = new ObjectMapper().readValue(output, StatusResponse.class);
+					System.out.println(statusResponse.getId() + " " + statusResponse.getType() + " " + statusResponse.getResponse());
+				}
 
-			httpConnection.disconnect();
+				httpConnection.disconnect();
+				
+				if(!statusResponse.getResponse().equals("200")){
+					serviceList.remove(serviceList.get(k));		
+					System.out.println("serviço eliminado");
+					k--;
+				}
 
-		  } catch (MalformedURLException e) {
-
-			e.printStackTrace();
-
-		  } catch (IOException e) {
-
-			e.printStackTrace();
-
-		 }
+				} catch (MalformedURLException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+		}
 
 	}	 	
 	
@@ -124,7 +134,14 @@ public class ReadDataServiceBean implements ReadDataService {
 		return new StatusResponse(statusRequest.getId(), statusRequest.getType(), "200");
 		
 	}
-	
+	//resposta temporaria ao ping
+	@Override
+	public StatusResponse camcofPongProvisorio1(StatusRequest statusRequest){
+
+		System.out.println(statusRequest.getId() + " " + statusRequest.getStatus()  + " " + statusRequest.getType());
+		return new StatusResponse(statusRequest.getId(), statusRequest.getType(), "201");
+		
+	}
 	
 	//Funções auxiliares
 	

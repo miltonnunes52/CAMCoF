@@ -10,5 +10,6 @@ public interface ReadDataService {
 	public SensorServiceResponse connectService(SensorService sensorService);
 	public void camcofPing();
 	public StatusResponse camcofPongProvisorio(StatusRequest statusRequest);
+	public StatusResponse camcofPongProvisorio1(StatusRequest statusRequest);
 
 }

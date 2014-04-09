@@ -10,7 +10,7 @@ public interface EndPointService {
 	DataResponse receiveData(DataObject dataObject);
 	void camcofPing();
 	StatusResponse camcofPongProvisorio(StatusRequest statusRequest);
-
+	StatusResponse camcofPongProvisorio1(StatusRequest statusRequest);
 	
 	
 
