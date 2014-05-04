@@ -1,5 +1,7 @@
-
 package com.example.switchyard.CAMCoF.CommunicationServices;
+
+
+
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,11 +13,9 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import org.codehaus.jackson.map.ObjectMapper;
-import org.hibernate.Session;
 
-import com.entities.Profile;
+import com.example.switchyard.CAMCoF.CommunicationServices.ReadDataService;
 import com.example.switchyard.CAMCoF.CommunicationServices.Objects.*;
-import com.persistence.HibernateUtil;
 
 import org.switchyard.component.bean.Service;
 
@@ -58,17 +58,6 @@ public class ReadDataServiceBean implements ReadDataService {
 			
 			
 			
-			System.out.println("Maven + Hibernate + MySQL");
-	        Session session = HibernateUtil.getSessionFactory().openSession();
-	 
-	        session.beginTransaction();
-	        Profile profile = new Profile();
-	 
-	        profile.setIdProfile(1);
-	        profile.setDescription("miltonnunes");
-	 
-	        session.save(profile);
-	        session.getTransaction().commit();
 
 		}
 		return serviceResponse;
@@ -76,7 +65,7 @@ public class ReadDataServiceBean implements ReadDataService {
 	
 	
 	
-	//periodicamente verifica quem est�� connectado
+	//periodicamente verifica quem esta connectado
 	@Override
 	public void camcofPing(){
 
@@ -107,7 +96,7 @@ public class ReadDataServiceBean implements ReadDataService {
 				if (httpConnection.getResponseCode() != 200) {
 					serviceList.remove(serviceList.get(k));	
 					k--;
-					System.out.println("servi��o eliminado " + "Failed : HTTP error code : "
+					System.out.println("servico eliminado " + "Failed : HTTP error code : "
 							+ httpConnection.getResponseCode());
 					continue;
 					
@@ -129,7 +118,7 @@ public class ReadDataServiceBean implements ReadDataService {
 				
 				if(!statusResponse.getResponse().equals("200")){
 					serviceList.remove(serviceList.get(k));		
-					System.out.println("servi��o eliminado");
+					System.out.println("servico eliminado");
 					k--;
 				}
 
@@ -160,10 +149,10 @@ public class ReadDataServiceBean implements ReadDataService {
 		
 	}
 	
-	//Fun����es auxiliares
+	//Funcoes auxiliares
 	
 	
-	//Compara servi��os mac address e tipo de sensor com existentes
+	//Compara servicos mac address e tipo de sensor com existentes
 	public boolean existSensorService(SensorService sensorService){
 		for (SensorService s : serviceList) {
 	        if (s.getId().equals(sensorService.getId()) && s.getType().equals(sensorService.getType())) {
@@ -173,7 +162,7 @@ public class ReadDataServiceBean implements ReadDataService {
 		return false;		
 	}
 	
-	//Compara servi��os mac address e tipo de sensor com existentes
+	//Compara servicos mac address e tipo de sensor com existentes
 	public boolean existSensorService(String id, String type){
 		for (SensorService s : serviceList) {
 	        if (s.getId().equals(id) && s.getType().equals(type)) {

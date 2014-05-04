@@ -1,7 +1,7 @@
 package com.entities;
 
 // default package
-// Generated 30/Abr/2014 16:41:17 by Hibernate Tools 3.4.0.CR1
+// Generated 3/Mai/2014 21:44:14 by Hibernate Tools 4.0.0
 
 import java.util.HashSet;
 import java.util.Set;
