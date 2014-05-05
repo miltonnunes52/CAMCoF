@@ -1,33 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
-                                         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<!DOCTYPE hibernate-configuration PUBLIC
+		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
- <session-factory name="">
-  <property name="hibernate.bytecode.use_reflection_optimizer">false</property>
-  <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-  <property name="hibernate.connection.password">root</property>
-  <property name="hibernate.connection.url">jdbc:mysql://islab.di.uminho.pt:36010/camcof</property>
-  <property name="hibernate.connection.username">root</property>
-  <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-  <property name="show_sql">true</property>
-  <mapping class="com.entities.Profile"/>
- 
-<!--   <mapping class="com.entities.ClassificationTags"/> -->
-<!--   <mapping class="com.entities.DataContext"/> -->
-<!--   <mapping class="com.entities.HighlevelInformation"/> -->
-<!--   <mapping class="com.entities.MidlevelInformation"/> -->
-<!--   <mapping class="com.entities.Modalities"/> -->
-<!--   <mapping class="com.entities.Real"/> -->
-<!--   <mapping class="com.entities.SensingData"/> -->
-<!--   <mapping class="com.entities.SensingDataId"/> -->
-<!--   <mapping class="com.entities.SensingDataValue"/> -->
-<!--   <mapping class="com.entities.Sensor"/> -->
-<!--   <mapping class="com.entities.SensorNode"/> -->
-<!--   <mapping class="com.entities.Study"/> -->
-<!--   <mapping class="com.entities.Tests"/> -->
-<!--   <mapping class="com.entities.Transformation"/> -->
-<!--   <mapping class="com.entities.TransformationLevel"/> -->
-<!--   <mapping class="com.entities.UserProfile"/> -->
-<!--   <mapping class="com.entities.ValueUnits"/> -->
- </session-factory>
+    <session-factory>
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.password">root</property>
+        <property name="hibernate.connection.url">jdbc:mysql://islab.di.uminho.pt:36010/camcof</property>
+        <property name="hibernate.connection.username">root</property>
+    </session-factory>
 </hibernate-configuration>

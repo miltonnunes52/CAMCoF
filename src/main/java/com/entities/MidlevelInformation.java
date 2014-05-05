@@ -1,6 +1,6 @@
 package com.entities;
 // default package
-// Generated 3/Mai/2014 21:44:14 by Hibernate Tools 4.0.0
+// Generated 5/Mai/2014 15:56:04 by Hibernate Tools 4.0.0
 
 import java.util.HashSet;
 import java.util.Set;
@@ -101,7 +101,7 @@ public class MidlevelInformation implements java.io.Serializable {
 		this.feature = feature;
 	}
 
-	@Column(name = "Highlevel-information_idHighlevel-information", nullable = false, updatable= false, insertable=false)
+	@Column(name = "Highlevel-information_idHighlevel-information", nullable = false, updatable = false, insertable = false)
 	public int getHighlevelInformationIdHighlevelInformation() {
 		return this.highlevelInformationIdHighlevelInformation;
 	}

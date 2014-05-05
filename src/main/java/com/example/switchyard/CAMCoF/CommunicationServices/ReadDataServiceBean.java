@@ -12,15 +12,25 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-import org.codehaus.jackson.map.ObjectMapper;
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
 
+import org.codehaus.jackson.map.ObjectMapper;
+import org.hibernate.Session;
+
+import com.entities.Profile;
+import com.entities.ProfileHome;
 import com.example.switchyard.CAMCoF.CommunicationServices.ReadDataService;
 import com.example.switchyard.CAMCoF.CommunicationServices.Objects.*;
 
 import org.switchyard.component.bean.Service;
 
+@Stateless
 @Service(ReadDataService.class)
 public class ReadDataServiceBean implements ReadDataService {
+	
+	@EJB
+    private ProfileHome profileHome;
 	
 	private ArrayList<SensorService> serviceList = new ArrayList<SensorService>();
 
@@ -56,6 +66,17 @@ public class ReadDataServiceBean implements ReadDataService {
 			serviceList.add(sensorService);
 			printServicesList();
 			
+
+			//teste de conexao DB
+	    	System.out.println("Maven + Hibernate + MySQL");
+	        System.out.println(profileHome.findById(6).getDescription());
+	        
+	        Profile profile = new Profile();
+	        profile.setDescription("new");
+	        profile.setIdProfile(7);
+	        
+	        profileHome.merge(profile);
+	        
 			
 			
 

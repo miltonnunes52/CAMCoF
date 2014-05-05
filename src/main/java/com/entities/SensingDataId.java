@@ -1,6 +1,6 @@
 package com.entities;
 // default package
-// Generated 3/Mai/2014 21:44:14 by Hibernate Tools 4.0.0
+// Generated 5/Mai/2014 15:56:04 by Hibernate Tools 4.0.0
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
