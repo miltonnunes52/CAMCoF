@@ -1,7 +1,6 @@
 package com.example.switchyard.CAMCoF.CommunicationServices.Persist;
 
-import java.util.HashSet;
-import java.util.Set;
+
 
 import javax.ejb.EJB;
 
@@ -55,39 +54,41 @@ public class SaveSensingBean implements SaveSensingInterface {
 	
 	
 	
+	
+	
+	
 
 	@Override
 	public SensingData addSensingData(SensorService sensorService) {
 		
 		/*************/
-		
-		Sensor sensor = sensorHome.findById(13);
-
-		
-		System.out.println("sensor : " + sensor.getIdSensor()+ sensor.getType());
-		
-		SensorNode sensorNode1 = new SensorNode();
-		sensorNode1.setAddress(sensorService.getIp());
-		sensorNode1.setDescription("descriptionSensorNode");
-		sensorNode1.setSensor(sensor);
-		sensorNode1.setIdSensorNode(Integer.parseInt(sensorService.getType()));
-		
-		
-		Set<SensingData> sensingDatas = new HashSet<SensingData>(0);
-		sensorNode1.setSensingDatas(sensingDatas);
-		
-//		System.out.println("sensorNode : " + sensorNode1.getIdSensorNode()+ " " + sensorNode1.getAddress() + " " +sensorNode1.getDescription()+ " " + sensorNode1.getSensor().getIdSensor());
-
-		
-
-		
-		sensorNode1 = sensorNodeHome.merge(sensorNode1);
-		
-
-		
-		System.out.println("sensor node id: " + sensorNode1.getIdSensorNode());
-		
-		System.out.println("sensor node adicionado");
+//		
+//		Sensor sensor = sensorHome.findById(13);
+//
+//		
+//		System.out.println("sensor : " + sensor.getIdSensor()+ sensor.getType());
+//		
+//		SensorNode sensorNode1 = new SensorNode();
+//		sensorNode1.setAddress(sensorService.getIp());
+//		sensorNode1.setDescription("descriptionSensorNode");
+//		sensorNode1.setSensor(sensor);
+//		sensorNode1.setIdSensorNode(Integer.parseInt(sensorService.getType()));
+//		
+//		
+//		Set<SensingData> sensingDatas = new HashSet<SensingData>(0);
+//		sensorNode1.setSensingDatas(sensingDatas);
+//		
+//
+//		
+//
+//		
+//		sensorNode1 = sensorNodeHome.merge(sensorNode1);
+//		
+//
+//		
+//		System.out.println("sensor node id: " + sensorNode1.getIdSensorNode());
+//		
+//		System.out.println("sensor node adicionado");
 		/**********/
 		
 		
@@ -101,8 +102,8 @@ public class SaveSensingBean implements SaveSensingInterface {
 		sensingData.setDataContext(dt);
 		MidlevelInformation mli = midlevelInformationHome.findById(1);
 		sensingData.setMidlevelInformation(mli);
-		//SensorNode sensorNode = sensorNodeHome.findById(Integer.parseInt(sensorService.getId()));
-		sensingData.setSensorNode(sensorNode1);
+		SensorNode sensorNode = sensorNodeHome.findById(Integer.parseInt(sensorService.getType()));
+		sensingData.setSensorNode(sensorNode);
 		TransformationLevel tl = transformationLevelHome.findById(1);
 		sensingData.setTransformationLevel(tl);
 		UserProfile up = userProfileHome.findById(1);
@@ -110,9 +111,9 @@ public class SaveSensingBean implements SaveSensingInterface {
 		sensingData.setUserProfile(up);
 				
 		
-		sensingData.setId(new SensingDataId(Integer.parseInt(sensorService.getId()),sensorNode1.getIdSensorNode()));
+		sensingData.setId(new SensingDataId(Integer.parseInt(sensorService.getId()),sensorNode.getIdSensorNode()));
 		sensingData.setDescription("descriptionSensingData");
-		sensingData.setResourceAddress(sensorNode1.getAddress());
+		sensingData.setResourceAddress(sensorNode.getAddress());
 		sensingData.setTimeCreation("horaadefinir");
 				
 		sensingDataHome.merge(sensingData);
@@ -124,18 +125,85 @@ public class SaveSensingBean implements SaveSensingInterface {
 		
 	}
 
-//	@Override
-//	public SensorNode addSensorNode(SensorService sensorService) {
-//		Sensor sensor = sensorHome.findById(Integer.parseInt(sensorService.getId()));
-//		
-//		SensorNode sensorNode = new SensorNode();
-//		sensorNode.setAddress(sensorService.getIp());
-//		sensorNode.setDescription("descriptionSensorNode");
-//		sensorNode.setSensor(sensor);
-//		sensorNodeHome.merge(sensorNode);
-//		return sensorNode;
-//	}
-//	
+
+
+
+
+
+
+	@Override
+	public boolean verifySensor(SensorService sensorService) {
+		
+		System.out.println("SaveSesingBean!!!!!!!!!!! verify sensor");
+		
+		String id = sensorService.getId();
+		if(sensorHome.existByID(Integer.parseInt(id))){
+			return true;
+			
+		}
+		return false;
+	}
+
+
+
+
+
+
+
+	@Override
+	public SensorService addNewSensor(SensorService sensorService) {
+		
+		System.out.println("SaveSesingBean!!!!!!!!!!! add new sensor");
+		
+		Sensor sensor = new Sensor();
+		
+		
+		//temp id do sensor e o ip
+		sensor.setIdSensor(Integer.parseInt(sensorService.getId()));
+		sensor.setDataPeriodicity(Integer.toString(sensorService.getPeriod()));
+		sensor.setLocation("location");
+		sensor.setType(sensorService.getType());
+		
+		
+		sensor = sensorHome.merge(sensor);
+		
+		
+		/*******/
+		
+		System.out.println(sensor.getIdSensor() + sensor.getType());
+		/******/
+		
+		return sensorService;
+				
+	}
+	
+
+	@Override
+	public SensorService addSensorNode(SensorService sensorService) {
+
+		System.out.println("SaveSesingBean!!!!!!!!!!!   add sensor node");
+		
+	
+	
+		Sensor sensor = sensorHome.findById(13);
+		System.out.println("sensor : " + sensor.getIdSensor()+ sensor.getType());
+		
+		SensorNode sensorNode1 = new SensorNode();
+		sensorNode1.setAddress(sensorService.getIp());
+		sensorNode1.setDescription("descriptionSensorNode");
+		sensorNode1.setSensor(sensor);
+		sensorNode1.setIdSensorNode(Integer.parseInt(sensorService.getType()));
+		
+		
+		
+		sensorNode1 = sensorNodeHome.merge(sensorNode1);
+		
+		return sensorService;
+
+		
+	
+	}
+	
 	
 	
 	

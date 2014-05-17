@@ -61,12 +61,6 @@
       <sca:reference name="SaveSensingInterface">
         <sca:interface.java interface="com.example.switchyard.CAMCoF.CommunicationServices.Persist.SaveSensingInterface"/>
       </sca:reference>
-      <sca:reference name="VerifyInterface">
-        <sca:interface.java interface="com.example.switchyard.CAMCoF.CommunicationServices.Persist.VerifyInterface"/>
-      </sca:reference>
-      <sca:reference name="SaveSensorInterface">
-        <sca:interface.java interface="com.example.switchyard.CAMCoF.CommunicationServices.Persist.SaveSensorInterface"/>
-      </sca:reference>
     </sca:component>
     <sca:component name="SaveDataBean">
       <bean:implementation.bean class="com.example.switchyard.CAMCoF.CommunicationServices.Persist.SaveDataBean"/>
@@ -78,18 +72,6 @@
       <bean:implementation.bean class="com.example.switchyard.CAMCoF.CommunicationServices.Persist.SaveSensingBean"/>
       <sca:service name="SaveSensingInterface">
         <sca:interface.java interface="com.example.switchyard.CAMCoF.CommunicationServices.Persist.SaveSensingInterface"/>
-      </sca:service>
-    </sca:component>
-    <sca:component name="VerifyBean">
-      <bean:implementation.bean class="com.example.switchyard.CAMCoF.CommunicationServices.Persist.VerifyBean"/>
-      <sca:service name="VerifyInterface">
-        <sca:interface.java interface="com.example.switchyard.CAMCoF.CommunicationServices.Persist.VerifyInterface"/>
-      </sca:service>
-    </sca:component>
-    <sca:component name="SaveSensorBean">
-      <bean:implementation.bean class="com.example.switchyard.CAMCoF.CommunicationServices.Persist.SaveSensorBean"/>
-      <sca:service name="SaveSensorInterface">
-        <sca:interface.java interface="com.example.switchyard.CAMCoF.CommunicationServices.Persist.SaveSensorInterface"/>
       </sca:service>
     </sca:component>
   </sca:composite>
