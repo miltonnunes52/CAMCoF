@@ -10,13 +10,85 @@
             <quartz:binding.quartz name="CAMCoFping">
                 <sy:operationSelector operationName="camcofPing"/>
                 <quartz:name>CAMCoFping</quartz:name>
-                <quartz:cron>0 0/1 0-23 ? * MON-SUN</quartz:cron>
+                <quartz:cron>0 0/5 0-23 ? * MON-SUN</quartz:cron>
             </quartz:binding.quartz>
         </sca:service>
         <sca:component name="ReadDataServiceBean">
             <bean:implementation.bean class="com.example.switchyard.CAMCoF.CommunicationServices.ReadDataServiceBean"/>
             <sca:service name="ReadDataService">
                 <sca:interface.java interface="com.example.switchyard.CAMCoF.CommunicationServices.ReadDataService"/>
+            </sca:service>
+            <sca:reference name="SaveDataService">
+                <sca:interface.java interface="com.example.switchyard.CAMCoF.CommunicationServices.SaveDataService"/>
+            </sca:reference>
+            <sca:reference name="SaveSensingService">
+                <sca:interface.java interface="com.example.switchyard.CAMCoF.CommunicationServices.SaveSensingService"/>
+            </sca:reference>
+        </sca:component>
+        <sca:component name="SaveDataComponent">
+            <bpm:implementation.bpm persistent="false" processId="SaveDataService">
+                <bpm:manifest>
+                    <bpm:resources>
+                        <bpm:resource location="SaveDataComponent.bpmn" type="BPMN2"/>
+                    </bpm:resources>
+                </bpm:manifest>
+                <bpm:operations>
+                    <bpm:operation type="START_PROCESS"/>
+                </bpm:operations>
+            </bpm:implementation.bpm>
+            <sca:service name="SaveDataService">
+                <sca:interface.java interface="com.example.switchyard.CAMCoF.CommunicationServices.SaveDataService"/>
+            </sca:service>
+            <sca:reference name="SaveDataInterface">
+                <sca:interface.java interface="com.example.switchyard.CAMCoF.CommunicationServices.Persist.SaveDataInterface"/>
+            </sca:reference>
+        </sca:component>
+        <sca:component name="SaveSensingComponent">
+            <bpm:implementation.bpm persistent="false" processId="SaveSensingData">
+                <bpm:manifest>
+                    <bpm:resources>
+                        <bpm:resource location="SaveSensingComponent.bpmn" type="BPMN2"/>
+                    </bpm:resources>
+                </bpm:manifest>
+                <bpm:operations>
+                    <bpm:operation type="START_PROCESS"/>
+                </bpm:operations>
+            </bpm:implementation.bpm>
+            <sca:service name="SaveSensingService">
+                <sca:interface.java interface="com.example.switchyard.CAMCoF.CommunicationServices.SaveSensingService"/>
+            </sca:service>
+            <sca:reference name="SaveSensingInterface">
+                <sca:interface.java interface="com.example.switchyard.CAMCoF.CommunicationServices.Persist.SaveSensingInterface"/>
+            </sca:reference>
+            <sca:reference name="VerifyInterface">
+                <sca:interface.java interface="com.example.switchyard.CAMCoF.CommunicationServices.Persist.VerifyInterface"/>
+            </sca:reference>
+            <sca:reference name="SaveSensorInterface">
+                <sca:interface.java interface="com.example.switchyard.CAMCoF.CommunicationServices.Persist.SaveSensorInterface"/>
+            </sca:reference>
+        </sca:component>
+        <sca:component name="SaveDataBean">
+            <bean:implementation.bean class="com.example.switchyard.CAMCoF.CommunicationServices.Persist.SaveDataBean"/>
+            <sca:service name="SaveDataInterface">
+                <sca:interface.java interface="com.example.switchyard.CAMCoF.CommunicationServices.Persist.SaveDataInterface"/>
+            </sca:service>
+        </sca:component>
+        <sca:component name="SaveSensingBean">
+            <bean:implementation.bean class="com.example.switchyard.CAMCoF.CommunicationServices.Persist.SaveSensingBean"/>
+            <sca:service name="SaveSensingInterface">
+                <sca:interface.java interface="com.example.switchyard.CAMCoF.CommunicationServices.Persist.SaveSensingInterface"/>
+            </sca:service>
+        </sca:component>
+        <sca:component name="VerifyBean">
+            <bean:implementation.bean class="com.example.switchyard.CAMCoF.CommunicationServices.Persist.VerifyBean"/>
+            <sca:service name="VerifyInterface">
+                <sca:interface.java interface="com.example.switchyard.CAMCoF.CommunicationServices.Persist.VerifyInterface"/>
+            </sca:service>
+        </sca:component>
+        <sca:component name="SaveSensorBean">
+            <bean:implementation.bean class="com.example.switchyard.CAMCoF.CommunicationServices.Persist.SaveSensorBean"/>
+            <sca:service name="SaveSensorInterface">
+                <sca:interface.java interface="com.example.switchyard.CAMCoF.CommunicationServices.Persist.SaveSensorInterface"/>
             </sca:service>
         </sca:component>
     </sca:composite>

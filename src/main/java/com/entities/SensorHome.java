@@ -5,6 +5,7 @@ package com.entities;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -64,6 +65,30 @@ public class SensorHome {
 		} catch (RuntimeException re) {
 			log.error("get failed", re);
 			throw re;
+		}
+	}
+	
+	public Sensor findByType(String type) {
+		log.debug("getting Sensor instance with type: " + type);
+		try {
+			Sensor instance = entityManager.find(Sensor.class, type);
+			log.debug("get successful");
+			return instance;
+		} catch (RuntimeException re) {
+			log.error("get failed", re);
+			throw re;
+		}
+	}
+	
+	public boolean existByID(Integer id) {
+		log.debug("getting Sensor instance with id: " + id);
+		try {
+			Sensor instance = entityManager.find(Sensor.class, id);
+			log.debug("get successful");
+			return true;
+		} catch (RuntimeException re) {
+			log.error("get failed", re);
+			return false;
 		}
 	}
 }

@@ -2,9 +2,13 @@ package com.entities;
 // default package
 // Generated 5/Mai/2014 15:56:05 by Hibernate Tools 4.0.0
 
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -66,4 +70,5 @@ public class SensingDataHome {
 			throw re;
 		}
 	}
+	
 }

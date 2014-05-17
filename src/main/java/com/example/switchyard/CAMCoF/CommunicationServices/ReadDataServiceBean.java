@@ -14,26 +14,42 @@ import java.util.ArrayList;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 
 import org.codehaus.jackson.map.ObjectMapper;
-import org.hibernate.Session;
 
-import com.entities.Profile;
 import com.entities.ProfileHome;
+import com.entities.SensorHome;
 import com.example.switchyard.CAMCoF.CommunicationServices.ReadDataService;
 import com.example.switchyard.CAMCoF.CommunicationServices.Objects.*;
 
+import org.switchyard.component.bean.Reference;
 import org.switchyard.component.bean.Service;
 
 @Stateless
 @Service(ReadDataService.class)
 public class ReadDataServiceBean implements ReadDataService {
 	
+	
+		
 	@EJB
     private ProfileHome profileHome;
 	
+	@EJB
+    private SensorHome sensorHome;
+	
+	@Inject
+	@Reference
+	private SaveDataService saveDataService;
+	
+	@Inject
+	@Reference
+	private SaveSensingService saveSensingService;
+
+	
 	private ArrayList<SensorService> serviceList = new ArrayList<SensorService>();
 
+	
 	@Override
 	public DataResponse receiveData(DataObject dataObject){
 		DataResponse response;
@@ -41,6 +57,14 @@ public class ReadDataServiceBean implements ReadDataService {
 		System.out.println(dataObject.getId() + " " + dataObject.getType() + " " + dataObject.getData());
 		
 		if(existSensorService(dataObject.getId(), dataObject.getType())){
+			
+			//gravar dados na BD
+			
+			//temp -  confirmar os valores fatal aqui sensingData
+			saveDataService.saveData(dataObject);
+
+			
+			
 			response = new DataResponse("200 - Accepted");	
 		}
 		else{
@@ -63,20 +87,16 @@ public class ReadDataServiceBean implements ReadDataService {
 		}
 		else{
 			serviceResponse = new SensorServiceResponse("200", "islab.di.uminho.pt/CAMCoF/send/" + sensorService.getId() + "/" + sensorService.getType());
+			
+			
 			serviceList.add(sensorService);
 			printServicesList();
 			
-
-			//teste de conexao DB
-	    	System.out.println("Maven + Hibernate + MySQL");
-	        System.out.println(profileHome.findById(6).getDescription());
-	        
-	        Profile profile = new Profile();
-	        profile.setDescription("new");
-	        profile.setIdProfile(7);
-	        
-	        profileHome.merge(profile);
-	        
+			
+			
+			//gravar dados na BD
+			
+			saveSensingService.saveData(sensorService);
 			
 			
 

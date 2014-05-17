@@ -27,27 +27,26 @@ public class MidlevelInformation implements java.io.Serializable {
 	private DataContext dataContext;
 	private String description;
 	private String feature;
-	private int highlevelInformationIdHighlevelInformation;
+//	private int highlevelInformationIdHighlevelInformation;
 	private Set<SensingData> sensingDatas = new HashSet<SensingData>(0);
 
 	public MidlevelInformation() {
 	}
 
-	public MidlevelInformation(DataContext dataContext,
-			int highlevelInformationIdHighlevelInformation) {
+	public MidlevelInformation(DataContext dataContext, HighlevelInformation highlevelInformation) {
 		this.dataContext = dataContext;
-		this.highlevelInformationIdHighlevelInformation = highlevelInformationIdHighlevelInformation;
+//		this.highlevelInformationIdHighlevelInformation = highlevelInformationIdHighlevelInformation;
+		this.highlevelInformation = highlevelInformation;
 	}
 
 	public MidlevelInformation(HighlevelInformation highlevelInformation,
 			DataContext dataContext, String description, String feature,
-			int highlevelInformationIdHighlevelInformation,
 			Set<SensingData> sensingDatas) {
 		this.highlevelInformation = highlevelInformation;
 		this.dataContext = dataContext;
 		this.description = description;
 		this.feature = feature;
-		this.highlevelInformationIdHighlevelInformation = highlevelInformationIdHighlevelInformation;
+//		this.highlevelInformationIdHighlevelInformation = highlevelInformationIdHighlevelInformation;
 		this.sensingDatas = sensingDatas;
 	}
 
@@ -63,7 +62,7 @@ public class MidlevelInformation implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "Highlevel-information_idHighlevel-information")
+	@JoinColumn(name = "Highlevel_idHighlevel", nullable = false)
 	public HighlevelInformation getHighlevelInformation() {
 		return this.highlevelInformation;
 	}
@@ -101,15 +100,15 @@ public class MidlevelInformation implements java.io.Serializable {
 		this.feature = feature;
 	}
 
-	@Column(name = "Highlevel-information_idHighlevel-information", nullable = false, updatable = false, insertable = false)
-	public int getHighlevelInformationIdHighlevelInformation() {
-		return this.highlevelInformationIdHighlevelInformation;
-	}
-
-	public void setHighlevelInformationIdHighlevelInformation(
-			int highlevelInformationIdHighlevelInformation) {
-		this.highlevelInformationIdHighlevelInformation = highlevelInformationIdHighlevelInformation;
-	}
+//	@Column(name = "Highlevel-information_idHighlevel-information", nullable = false, updatable = false, insertable = false)
+//	public int getHighlevelInformationIdHighlevelInformation() {
+//		return this.highlevelInformationIdHighlevelInformation;
+//	}
+//
+//	public void setHighlevelInformationIdHighlevelInformation(
+//			int highlevelInformationIdHighlevelInformation) {
+//		this.highlevelInformationIdHighlevelInformation = highlevelInformationIdHighlevelInformation;
+//	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "midlevelInformation")
 	public Set<SensingData> getSensingDatas() {
