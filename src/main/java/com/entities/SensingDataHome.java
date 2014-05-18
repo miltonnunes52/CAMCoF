@@ -71,4 +71,14 @@ public class SensingDataHome {
 		}
 	}
 	
+	
+	public Integer getIdSensing(SensorNode idSensorNode){
+		
+		List<SensingDataId> resultlist =  entityManager.createQuery("SELECT id FROM SensingData WHERE sensorNode = :idSensorNode")
+			.setParameter("idSensorNode", idSensorNode).getResultList();
+		
+		return resultlist.get(0).getIdSensing();
+	}
+	
+	
 }

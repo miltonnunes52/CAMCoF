@@ -32,7 +32,7 @@ public class SaveDataBean implements SaveDataInterface {
 		
 		
 		
-		SensingDataId sdid = new SensingDataId(Integer.parseInt(dataObject.getId()), Integer.parseInt(dataObject.getType()));
+		SensingDataId sdid = dataObject.getSensingDataId();
 		
 
 		SensingData sensingData = sensingDataHome.findById(sdid);

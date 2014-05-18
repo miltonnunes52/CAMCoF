@@ -1,15 +1,19 @@
 package com.example.switchyard.CAMCoF.CommunicationServices.Objects;
 
+import com.entities.SensingDataId;
+
 public class DataObject {
 	
 	private String id;
 	private String type;
 	private String data;
+	private SensingDataId sensingDataId;
 	
 	public DataObject(String id, String type, String data) {
 		this.id = id;
 		this.type = type;
 		this.data = data;
+		this.setSensingDataId(null);
 	}
 
 	public DataObject() {
@@ -20,6 +24,7 @@ public class DataObject {
 		this.id = dataObject.getId();
 		this.type = dataObject.getType();
 		this.data = dataObject.getData();
+		this.sensingDataId = dataObject.getSensingDataId();
 		
 	}
 
@@ -46,6 +51,14 @@ public class DataObject {
 
 	public void setType(String type) {
 		this.id = type;
+	}
+
+	public SensingDataId getSensingDataId() {
+		return sensingDataId;
+	}
+
+	public void setSensingDataId(SensingDataId sensingDataId) {
+		this.sensingDataId = sensingDataId;
 	}
 	
 	

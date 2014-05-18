@@ -1,5 +1,7 @@
 package com.example.switchyard.CAMCoF.CommunicationServices.Objects;
 
+import com.entities.SensingDataId;
+
 public class SensorService {
 	
 	private String id;
@@ -8,6 +10,7 @@ public class SensorService {
 	private int period;
 	private String typedata;
 	private String description;
+	private SensingDataId sensingDataId;
 	
 	public SensorService(String id, String ip, String type, int period,
 			String typedata, String description) {
@@ -17,6 +20,7 @@ public class SensorService {
 		this.period = period;
 		this.typedata = typedata;
 		this.description = description;
+		this.setSensingDataId(null);
 	}
 
 	public SensorService(){
@@ -30,6 +34,7 @@ public class SensorService {
 		this.period = service.getPeriod();
 		this.typedata = service.getTypedata();
 		this.description = service.getDescription();
+		this.sensingDataId = service.getSensingDataId();
 	}
 	
 	public String getId() {
@@ -78,6 +83,14 @@ public class SensorService {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public SensingDataId getSensingDataId() {
+		return sensingDataId;
+	}
+
+	public void setSensingDataId(SensingDataId sensingDataId) {
+		this.sensingDataId = sensingDataId;
 	}
 	
 	

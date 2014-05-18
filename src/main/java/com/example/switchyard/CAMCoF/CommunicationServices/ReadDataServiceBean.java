@@ -19,6 +19,7 @@ import javax.inject.Inject;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.entities.ProfileHome;
+import com.entities.SensingData;
 import com.entities.SensorHome;
 import com.example.switchyard.CAMCoF.CommunicationServices.ReadDataService;
 import com.example.switchyard.CAMCoF.CommunicationServices.Objects.*;
@@ -60,7 +61,10 @@ public class ReadDataServiceBean implements ReadDataService {
 			
 			//gravar dados na BD
 			
-			//temp -  confirmar os valores fatal aqui sensingData
+			SensorService sensorServ = getSensorService(dataObject.getId(), dataObject.getType());
+			dataObject.setSensingDataId(sensorServ.getSensingDataId());
+			
+			
 			saveDataService.saveData(dataObject);
 
 			
@@ -89,14 +93,16 @@ public class ReadDataServiceBean implements ReadDataService {
 			serviceResponse = new SensorServiceResponse("200", "islab.di.uminho.pt/CAMCoF/send/" + sensorService.getId() + "/" + sensorService.getType());
 			
 			
-			serviceList.add(sensorService);
-			printServicesList();
-			
-			
-			
 			//gravar dados na BD
 			
-			saveSensingService.saveData(sensorService);
+			SensingData sensingData = saveSensingService.saveData(sensorService);
+			
+			sensorService.setSensingDataId(sensingData.getId());
+			
+			System.out.println("servico conectado: "+sensorService.getSensingDataId().getIdSensing() + " " + sensorService.getSensingDataId().getSensorNodeIdSensorNode());
+			
+			serviceList.add(sensorService);
+			printServicesList();
 			
 			
 
@@ -211,6 +217,16 @@ public class ReadDataServiceBean implements ReadDataService {
 	        }
 	    }
 		return false;		
+	}
+	
+	//get sensor service by id and type
+	public SensorService getSensorService(String id, String type){
+		for (SensorService s : serviceList) {
+	        if (s.getId().equals(id) && s.getType().equals(type)) {
+	            return s;
+	        }
+	    }
+		return null;		
 	}
 	
 	public void printServicesList(){

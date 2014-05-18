@@ -16,6 +16,10 @@ public class SensingDataId implements java.io.Serializable {
 
 	public SensingDataId() {
 	}
+	
+	public SensingDataId(int sensorNodeIdSensorNode) {
+		this.sensorNodeIdSensorNode = sensorNodeIdSensorNode;
+	}
 
 	public SensingDataId(int idSensing, int sensorNodeIdSensorNode) {
 		this.idSensing = idSensing;
