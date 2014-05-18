@@ -31,8 +31,6 @@ import org.switchyard.component.bean.Service;
 @Service(ReadDataService.class)
 public class ReadDataServiceBean implements ReadDataService {
 	
-	
-		
 	@EJB
     private ProfileHome profileHome;
 	
@@ -60,15 +58,10 @@ public class ReadDataServiceBean implements ReadDataService {
 		if(existSensorService(dataObject.getId(), dataObject.getType())){
 			
 			//gravar dados na BD
-			
 			SensorService sensorServ = getSensorService(dataObject.getId(), dataObject.getType());
 			dataObject.setSensingDataId(sensorServ.getSensingDataId());
-			
-			
 			saveDataService.saveData(dataObject);
 
-			
-			
 			response = new DataResponse("200 - Accepted");	
 		}
 		else{
@@ -92,20 +85,13 @@ public class ReadDataServiceBean implements ReadDataService {
 		else{
 			serviceResponse = new SensorServiceResponse("200", "islab.di.uminho.pt/CAMCoF/send/" + sensorService.getId() + "/" + sensorService.getType());
 			
-			
-			//gravar dados na BD
-			
+			//gravar dados na BD	
 			SensingData sensingData = saveSensingService.saveData(sensorService);
-			
 			sensorService.setSensingDataId(sensingData.getId());
-			
-			System.out.println("servico conectado: "+sensorService.getSensingDataId().getIdSensing() + " " + sensorService.getSensingDataId().getSensorNodeIdSensorNode());
 			
 			serviceList.add(sensorService);
 			printServicesList();
 			
-			
-
 		}
 		return serviceResponse;
 	}
@@ -117,12 +103,10 @@ public class ReadDataServiceBean implements ReadDataService {
 	public void camcofPing(){
 
 		for(int k=0; k<serviceList.size(); k++) {
-			 
 		
 			String targetURL = serviceList.get(k).getIp();
 			//String targetURL = "http://127.0.0.1:8080/CAMCoF/send/teste";
 
-		
 			try {
 
 				URL targetUrl = new URL(targetURL);

@@ -20,34 +20,21 @@ public class SaveDataBean implements SaveDataInterface {
 	@EJB
 	private SensingDataHome sensingDataHome;
 
-
 	
 	@Override
 	public void persistData(DataObject dataObject) {
 		
-
-		System.out.println("dataObjectID "+ dataObject.getId());
-		
 		SensingDataValue sensingDataValue = new SensingDataValue();
-		
-		
-		
-		SensingDataId sdid = dataObject.getSensingDataId();
-		
-
-		SensingData sensingData = sensingDataHome.findById(sdid);
-		
-		
-		
+		//get id sensing data respectivo
+		SensingDataId sensingDataId = dataObject.getSensingDataId();
+		SensingData sensingData = sensingDataHome.findById(sensingDataId);
+	
 		sensingDataValue.setSensingData(sensingData);
 		sensingDataValue.setValue(dataObject.getData());
 		sensingDataValue.setValueAddress("valueaddress");
 		
 		sensingDataValueHome.merge(sensingDataValue);
-		
-		
-		//value units?!
-		
+		//value units?!	
 	}
 
 }

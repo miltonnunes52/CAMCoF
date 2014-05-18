@@ -1,10 +1,6 @@
 package com.example.switchyard.CAMCoF.CommunicationServices.Persist;
 
 
-
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.ejb.EJB;
 
 import org.switchyard.component.bean.Service;
@@ -55,40 +51,17 @@ public class SaveSensingBean implements SaveSensingInterface {
 	@EJB
 	private SensingDataHome sensingDataHome;
 	
-	
-	
-	
-	
-	
 
 	@Override
 	public SensingData addSensingData(SensorService sensorService) {
 		
-		//new sensor node
-		
-		System.out.println("SaveSesingBean!!!!!!!!!!!   add sensor node");
-		
-		
-		
-		Sensor sensor = sensorHome.findById(Integer.parseInt(sensorService.getId()));
-		System.out.println("sensor : " + sensor.getIdSensor()+ sensor.getType());
-		
-		SensorNode sensorNode = new SensorNode();
-		sensorNode.setAddress(sensorService.getIp());
-		sensorNode.setDescription("descriptionSensorNode");
-		sensorNode.setSensor(sensor);
-		
-		
-		
-		sensorNode = sensorNodeHome.merge(sensorNode);
-		
-		
-		
-		//new sensing data
-		
 		SensingData sensingData = new SensingData();
 		
-		//valores definidos por default
+		//get sensor node
+		int idSensorNode = sensorService.getSensingDataId().getSensorNodeIdSensorNode();
+		SensorNode sensorNode = sensorNodeHome.findById(idSensorNode);
+		
+		//valores definidos por default temporariamente
 		ClassificationTags cltags = classificationTagsHome.findById(1);
 		sensingData.setClassificationTags(cltags);
 		DataContext dt = dataContextHome.findById(1);
@@ -102,42 +75,22 @@ public class SaveSensingBean implements SaveSensingInterface {
 		System.out.println("UserProfile: " + up.getIdUserProfile());
 		sensingData.setUserProfile(up);
 				
-		
 		sensingData.setId(new SensingDataId(sensorNode.getIdSensorNode()));
 		sensingData.setDescription("descriptionSensingData");
 		sensingData.setResourceAddress(sensorNode.getAddress());
 		sensingData.setTimeCreation("horaadefinir");
 		
-		
-		
 		sensingData = sensingDataHome.merge(sensingData);
 		
-		//get idsensing e actualiza no idsensing
+		//get e actualiza o idsensing
 		sensingData.getId().setIdSensing(sensingDataHome.getIdSensing(sensorNode));
 		
-		
-		
-		
-		System.out.println("sensing data id no bean: " + sensingData.getId().getIdSensing() + " " + sensingData.getId().getSensorNodeIdSensorNode());
-		
-		
-		System.out.println("sensing data adicionado");
-		
 		return sensingData;
-				
 		
 	}
 
-
-
-
-
-
-
 	@Override
 	public boolean verifySensor(SensorService sensorService) {
-		
-		System.out.println("SaveSesingBean!!!!!!!!!!! verify sensor");
 		
 		String id = sensorService.getId();
 		if(sensorHome.existByID(Integer.parseInt(id))){
@@ -146,46 +99,40 @@ public class SaveSensingBean implements SaveSensingInterface {
 		}
 		return false;
 	}
-
-
-
-
-
-
-
+	
 	@Override
 	public SensorService addNewSensor(SensorService sensorService) {
-		
-		System.out.println("SaveSesingBean!!!!!!!!!!! add new sensor");
-		
 		Sensor sensor = new Sensor();
-		
-		
-		//temp id do sensor e o ip - ISTE ID NAO ESTA BEM !!!!!!!!!!!
-		sensor.setIdSensor(Integer.parseInt(sensorService.getId()));
-		
-		
 		sensor.setDataPeriodicity(Integer.toString(sensorService.getPeriod()));
 		sensor.setLocation("location");
 		sensor.setType(sensorService.getType());
 		
-		
 		sensor = sensorHome.merge(sensor);
 		
-		
-		/*******/
-		
-		System.out.println(sensor.getIdSensor() + sensor.getType());
-		/******/
+		//atualiza id do sensor no sensorService
+		sensorService.setSensorId(sensor.getIdSensor());
 		
 		return sensorService;
 				
 	}
-	
 
-	
-	
-	
-	
+	@Override
+	public SensorService addSensorNode(SensorService sensorService) {
+		
+		//get sensor
+		Sensor sensor = sensorHome.findById(sensorService.getSensorId());
+		
+		SensorNode sensorNode = new SensorNode();
+		sensorNode.setAddress(sensorService.getIp());
+		sensorNode.setDescription("descriptionSensorNode");
+		sensorNode.setSensor(sensor);
+		
+		sensorNode = sensorNodeHome.merge(sensorNode);
+		
+		//atualiza valor do sensor node no sensorService
+		sensorService.setSensingDataId(new SensingDataId(sensorNode.getIdSensorNode()));
+		
+		return sensorService;
+	}
 
 }

@@ -8,4 +8,5 @@ public interface SaveSensingInterface {
 	public boolean verifySensor(SensorService sensorService);
 	public SensorService addNewSensor(SensorService sensorService);
 	public SensingData addSensingData(SensorService sensorService);
+	public SensorService addSensorNode(SensorService sensorService);
 }

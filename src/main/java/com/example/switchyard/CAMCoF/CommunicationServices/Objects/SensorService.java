@@ -11,6 +11,7 @@ public class SensorService {
 	private String typedata;
 	private String description;
 	private SensingDataId sensingDataId;
+	private int sensorId;
 	
 	public SensorService(String id, String ip, String type, int period,
 			String typedata, String description) {
@@ -35,6 +36,7 @@ public class SensorService {
 		this.typedata = service.getTypedata();
 		this.description = service.getDescription();
 		this.sensingDataId = service.getSensingDataId();
+		this.sensorId = service.getSensorId();
 	}
 	
 	public String getId() {
@@ -91,6 +93,14 @@ public class SensorService {
 
 	public void setSensingDataId(SensingDataId sensingDataId) {
 		this.sensingDataId = sensingDataId;
+	}
+
+	public int getSensorId() {
+		return sensorId;
+	}
+
+	public void setSensorId(int sensorId) {
+		this.sensorId = sensorId;
 	}
 	
 	
