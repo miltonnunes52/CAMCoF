@@ -9,6 +9,8 @@ import com.entities.ClassificationTags;
 import com.entities.ClassificationTagsHome;
 import com.entities.DataContext;
 import com.entities.DataContextHome;
+import com.entities.HighlevelInformation;
+import com.entities.HighlevelInformationHome;
 import com.entities.MidlevelInformation;
 import com.entities.MidlevelInformationHome;
 import com.entities.SensingData;
@@ -43,6 +45,9 @@ public class SaveSensingBean implements SaveSensingInterface {
 	private MidlevelInformationHome midlevelInformationHome;
 	
 	@EJB
+	private HighlevelInformationHome highlevelInformationHome;
+	
+	@EJB
 	private TransformationLevelHome transformationLevelHome;
 	
 	@EJB
@@ -61,13 +66,22 @@ public class SaveSensingBean implements SaveSensingInterface {
 		int idSensorNode = sensorService.getSensingDataId().getSensorNodeIdSensorNode();
 		SensorNode sensorNode = sensorNodeHome.findById(idSensorNode);
 		
+		//datacontext definido por default
+		DataContext dt = dataContextHome.findById(1);
+		sensingData.setDataContext(dt);
+		
+		//criar level information
+		HighlevelInformation hli = new HighlevelInformation(dt);
+		hli = highlevelInformationHome.merge(hli);
+		MidlevelInformation mli = new MidlevelInformation(dt, hli);
+		mli = midlevelInformationHome.merge(mli);
+		sensingData.setMidlevelInformation(mli);
+		
+		
+		
 		//valores definidos por default temporariamente
 		ClassificationTags cltags = classificationTagsHome.findById(1);
 		sensingData.setClassificationTags(cltags);
-		DataContext dt = dataContextHome.findById(1);
-		sensingData.setDataContext(dt);
-		MidlevelInformation mli = midlevelInformationHome.findById(1);
-		sensingData.setMidlevelInformation(mli);
 		sensingData.setSensorNode(sensorNode);
 		TransformationLevel tl = transformationLevelHome.findById(1);
 		sensingData.setTransformationLevel(tl);
@@ -75,6 +89,8 @@ public class SaveSensingBean implements SaveSensingInterface {
 		System.out.println("UserProfile: " + up.getIdUserProfile());
 		sensingData.setUserProfile(up);
 				
+		
+		
 		sensingData.setId(new SensingDataId(sensorNode.getIdSensorNode()));
 		sensingData.setDescription("descriptionSensingData");
 		sensingData.setResourceAddress(sensorNode.getAddress());

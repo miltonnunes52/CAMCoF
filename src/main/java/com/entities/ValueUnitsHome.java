@@ -8,7 +8,6 @@ import javax.persistence.PersistenceContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.jbpm.services.task.annotations.Local;
 
 /**
  * Home object for domain model class ValueUnits.
