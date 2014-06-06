@@ -75,8 +75,9 @@ public class SensingDataValue implements java.io.Serializable {
 	public void setValueAddress(String valueAddress) {
 		this.valueAddress = valueAddress;
 	}
-
-	@Column(name = "value", length = 45)
+	
+	//alterar valor disto novamente - default 45
+	@Column(name = "value", length = 900)
 	public String getValue() {
 		return this.value;
 	}

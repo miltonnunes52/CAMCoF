@@ -1,6 +1,8 @@
 package com.example.switchyard.CAMCoF.CommunicationServices.Persist;
 
 
+import java.util.HashSet;
+
 import javax.ejb.EJB;
 
 import org.switchyard.component.bean.Service;
@@ -71,8 +73,10 @@ public class SaveSensingBean implements SaveSensingInterface {
 		sensingData.setDataContext(dt);
 		
 		//criar level information
-		HighlevelInformation hli = new HighlevelInformation(dt);
-		hli = highlevelInformationHome.merge(hli);
+		//HighlevelInformation hli = new HighlevelInformation(dt);
+		//hli = highlevelInformationHome.merge(hli);
+		HighlevelInformation hli = highlevelInformationHome.findById(1);
+				
 		MidlevelInformation mli = new MidlevelInformation(dt, hli);
 		mli = midlevelInformationHome.merge(mli);
 		sensingData.setMidlevelInformation(mli);

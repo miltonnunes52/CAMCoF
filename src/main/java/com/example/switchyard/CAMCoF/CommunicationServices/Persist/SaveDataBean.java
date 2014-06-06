@@ -49,24 +49,26 @@ public class SaveDataBean implements SaveDataInterface {
 		sensingDataValue.setValueAddress("valueaddress");
 		
 		sensingDataValueHome.merge(sensingDataValue);
-		//value units?!	
+		//value units?!	de
 		
 		return dataObject;
 	}
 
 
 	
-	//confirmar se este metodo funciona direito!!!!!!!!!!!!!!
 	@Override
 	public DataObject processData(DataObject dataObject) {
 		String targetURL = "http://islab.di.uminho.pt:36001/MetricsReport/rest/Metrics/";
 		
+
+		
 		if(dataObject.getType().equals("keyboard")){
-			targetURL.concat("keydowntime");
+			targetURL = targetURL.concat("keydowntime");
 		}
 		else if(dataObject.getType().equals("mouse")){
-			targetURL.concat("mousevelocity");
+			targetURL = targetURL.concat("mousevelocity");
 		}
+		
 		
 		try {
 
@@ -87,10 +89,10 @@ public class SaveDataBean implements SaveDataInterface {
 			SensingDataId sensingDataId = dataObject.getSensingDataId();
 			SensingData sensingData = sensingDataHome.findById(sensingDataId);
 			for(SensingDataValue sensingDataValue : sensingData.getSensingDataValues()){
-				sensingDataValues.concat(sensingDataValue.getValue());
+				sensingDataValues = sensingDataValues.concat(sensingDataValue.getValue()).concat("\n");
 			}
 			
-			
+			System.out.println("input server: " + sensingDataValues);
 			outputStream.write(sensingDataValues.getBytes());
 			outputStream.flush();
 
@@ -121,7 +123,6 @@ public class SaveDataBean implements SaveDataInterface {
 	}
 
 
-	//confirmar se este metodo funciona direito!!!!!!!!!!!!!!
 	@Override
 	public void persistProcessedData(DataObject dataObject) {
 		
