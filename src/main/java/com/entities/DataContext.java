@@ -1,6 +1,6 @@
 package com.entities;
 // default package
-// Generated 5/Mai/2014 15:56:04 by Hibernate Tools 4.0.0
+// Generated 7/Jun/2014 22:44:51 by Hibernate Tools 3.6.0
 
 import java.util.HashSet;
 import java.util.Set;
@@ -23,12 +23,12 @@ public class DataContext implements java.io.Serializable {
 	private Integer idDataContext;
 	private String description;
 	private String tag;
+	private Set<HighlevelInformation> highlevelInformations = new HashSet<HighlevelInformation>(
+			0);
 	private Set<MidlevelInformation> midlevelInformations = new HashSet<MidlevelInformation>(
 			0);
 	private Set<SensingData> sensingDatas = new HashSet<SensingData>(0);
 	private Set<Study> studies = new HashSet<Study>(0);
-	private Set<HighlevelInformation> highlevelInformations = new HashSet<HighlevelInformation>(
-			0);
 	private Set<Tests> testses = new HashSet<Tests>(0);
 	private Set<Real> reals = new HashSet<Real>(0);
 
@@ -36,16 +36,16 @@ public class DataContext implements java.io.Serializable {
 	}
 
 	public DataContext(String description, String tag,
+			Set<HighlevelInformation> highlevelInformations,
 			Set<MidlevelInformation> midlevelInformations,
 			Set<SensingData> sensingDatas, Set<Study> studies,
-			Set<HighlevelInformation> highlevelInformations,
 			Set<Tests> testses, Set<Real> reals) {
 		this.description = description;
 		this.tag = tag;
+		this.highlevelInformations = highlevelInformations;
 		this.midlevelInformations = midlevelInformations;
 		this.sensingDatas = sensingDatas;
 		this.studies = studies;
-		this.highlevelInformations = highlevelInformations;
 		this.testses = testses;
 		this.reals = reals;
 	}
@@ -80,6 +80,16 @@ public class DataContext implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "dataContext")
+	public Set<HighlevelInformation> getHighlevelInformations() {
+		return this.highlevelInformations;
+	}
+
+	public void setHighlevelInformations(
+			Set<HighlevelInformation> highlevelInformations) {
+		this.highlevelInformations = highlevelInformations;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "dataContext")
 	public Set<MidlevelInformation> getMidlevelInformations() {
 		return this.midlevelInformations;
 	}
@@ -105,16 +115,6 @@ public class DataContext implements java.io.Serializable {
 
 	public void setStudies(Set<Study> studies) {
 		this.studies = studies;
-	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "dataContext")
-	public Set<HighlevelInformation> getHighlevelInformations() {
-		return this.highlevelInformations;
-	}
-
-	public void setHighlevelInformations(
-			Set<HighlevelInformation> highlevelInformations) {
-		this.highlevelInformations = highlevelInformations;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "dataContext")

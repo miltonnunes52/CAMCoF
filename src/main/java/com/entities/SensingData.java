@@ -1,6 +1,6 @@
 package com.entities;
 // default package
-// Generated 5/Mai/2014 15:56:04 by Hibernate Tools 4.0.0
+// Generated 7/Jun/2014 22:44:51 by Hibernate Tools 3.6.0
 
 import java.util.HashSet;
 import java.util.Set;
@@ -32,6 +32,7 @@ public class SensingData implements java.io.Serializable {
 	private String timeCreation;
 	private String description;
 	private String resourceAddress;
+	private String timeEnd;
 	private Set<SensingDataValue> sensingDataValues = new HashSet<SensingDataValue>(
 			0);
 
@@ -56,7 +57,7 @@ public class SensingData implements java.io.Serializable {
 			MidlevelInformation midlevelInformation, DataContext dataContext,
 			SensorNode sensorNode, ClassificationTags classificationTags,
 			String timeCreation, String description, String resourceAddress,
-			Set<SensingDataValue> sensingDataValues) {
+			String timeEnd, Set<SensingDataValue> sensingDataValues) {
 		this.id = id;
 		this.userProfile = userProfile;
 		this.transformationLevel = transformationLevel;
@@ -67,6 +68,7 @@ public class SensingData implements java.io.Serializable {
 		this.timeCreation = timeCreation;
 		this.description = description;
 		this.resourceAddress = resourceAddress;
+		this.timeEnd = timeEnd;
 		this.sensingDataValues = sensingDataValues;
 	}
 
@@ -167,6 +169,15 @@ public class SensingData implements java.io.Serializable {
 
 	public void setResourceAddress(String resourceAddress) {
 		this.resourceAddress = resourceAddress;
+	}
+
+	@Column(name = "timeEnd", length = 45)
+	public String getTimeEnd() {
+		return this.timeEnd;
+	}
+
+	public void setTimeEnd(String timeEnd) {
+		this.timeEnd = timeEnd;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "sensingData")

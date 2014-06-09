@@ -43,11 +43,11 @@ public class SaveDataBean implements SaveDataInterface {
 		//get id sensing data respectivo
 		SensingDataId sensingDataId = dataObject.getSensingDataId();
 		SensingData sensingData = sensingDataHome.findById(sensingDataId);
-	
+
 		sensingDataValue.setSensingData(sensingData);
 		sensingDataValue.setValue(dataObject.getData());
 		sensingDataValue.setValueAddress("valueaddress");
-		
+
 		sensingDataValueHome.merge(sensingDataValue);
 		//value units?!	de
 		

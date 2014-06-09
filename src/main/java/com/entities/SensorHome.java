@@ -1,6 +1,6 @@
 package com.entities;
 // default package
-// Generated 5/Mai/2014 15:56:05 by Hibernate Tools 4.0.0
+// Generated 7/Jun/2014 22:44:51 by Hibernate Tools 3.6.0
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -68,18 +68,6 @@ public class SensorHome {
 		}
 	}
 	
-	public Sensor findByType(String type) {
-		log.debug("getting Sensor instance with type: " + type);
-		try {
-			Sensor instance = entityManager.find(Sensor.class, type);
-			log.debug("get successful");
-			return instance;
-		} catch (RuntimeException re) {
-			log.error("get failed", re);
-			throw re;
-		}
-	}
-	
 	public boolean existByID(Integer id) {
 		log.debug("getting Sensor instance with id: " + id);
 		try {
@@ -91,4 +79,27 @@ public class SensorHome {
 			return false;
 		}
 	}
+	
+	public boolean existByIdentifier(String id) {
+		Long i =  (Long) entityManager.createQuery("SELECT COUNT(*) FROM Sensor WHERE sensorIdentifier = :sensorIdentifier")
+				.setParameter("sensorIdentifier", id).getSingleResult();
+
+		if (i == 0) return false;
+		return true;
+	}
+	
+	public Sensor findByIdentifier(String id) {
+		log.debug("getting Sensor instance with sensorIdentifier: " + id);
+		try {
+			Sensor instance = (Sensor) entityManager.createQuery("FROM Sensor WHERE sensorIdentifier = :id")
+					.setParameter("id", id).getSingleResult();
+			log.debug("get successful");
+			return instance;
+		} catch (RuntimeException re) {
+			log.error("get failed", re);
+			throw re;
+		}
+	}
+	
+	
 }

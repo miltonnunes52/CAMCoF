@@ -1,6 +1,6 @@
 package com.entities;
 // default package
-// Generated 5/Mai/2014 15:56:05 by Hibernate Tools 4.0.0
+// Generated 7/Jun/2014 22:44:51 by Hibernate Tools 3.6.0
 
 import java.util.List;
 
@@ -70,14 +70,11 @@ public class SensingDataHome {
 		}
 	}
 	
-	
 	public Integer getIdSensing(SensorNode idSensorNode){
-		
+
 		List<SensingDataId> resultlist =  entityManager.createQuery("SELECT id FROM SensingData WHERE sensorNode = :idSensorNode")
 			.setParameter("idSensorNode", idSensorNode).getResultList();
-		
+
 		return resultlist.get(0).getIdSensing();
 	}
-	
-	
 }

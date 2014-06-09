@@ -77,7 +77,7 @@ public class SaveSensingBean implements SaveSensingInterface {
 		//hli = highlevelInformationHome.merge(hli);
 		HighlevelInformation hli = highlevelInformationHome.findById(1);
 				
-		MidlevelInformation mli = new MidlevelInformation(dt, hli);
+		MidlevelInformation mli = new MidlevelInformation(hli, dt);
 		mli = midlevelInformationHome.merge(mli);
 		sensingData.setMidlevelInformation(mli);
 		
@@ -89,7 +89,9 @@ public class SaveSensingBean implements SaveSensingInterface {
 		sensingData.setSensorNode(sensorNode);
 		TransformationLevel tl = transformationLevelHome.findById(1);
 		sensingData.setTransformationLevel(tl);
-		UserProfile up = userProfileHome.findById(1);
+		
+		
+		UserProfile up = userProfileHome.findByUsername(sensorService.getId());
 		System.out.println("UserProfile: " + up.getIdUserProfile());
 		sensingData.setUserProfile(up);
 				
@@ -112,8 +114,8 @@ public class SaveSensingBean implements SaveSensingInterface {
 	@Override
 	public boolean verifySensor(SensorService sensorService) {
 		
-		String id = sensorService.getId();
-		if(sensorHome.existByID(Integer.parseInt(id))){
+		String id = sensorService.getSensorid();
+		if(sensorHome.existByIdentifier(id)){
 			return true;
 			
 		}
@@ -126,11 +128,11 @@ public class SaveSensingBean implements SaveSensingInterface {
 		sensor.setDataPeriodicity(Integer.toString(sensorService.getPeriod()));
 		sensor.setLocation("location");
 		sensor.setType(sensorService.getType());
+		sensor.setSensorIdentifier(sensorService.getSensorid());
 		
 		sensor = sensorHome.merge(sensor);
 		
-		//atualiza id do sensor no sensorService
-		sensorService.setSensorId(sensor.getIdSensor());
+		
 		
 		return sensorService;
 				
@@ -140,7 +142,7 @@ public class SaveSensingBean implements SaveSensingInterface {
 	public SensorService addSensorNode(SensorService sensorService) {
 		
 		//get sensor
-		Sensor sensor = sensorHome.findById(sensorService.getSensorId());
+		Sensor sensor = sensorHome.findByIdentifier(sensorService.getSensorid());
 		
 		SensorNode sensorNode = new SensorNode();
 		sensorNode.setAddress(sensorService.getIp());

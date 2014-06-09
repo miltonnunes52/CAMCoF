@@ -1,6 +1,6 @@
 package com.entities;
 // default package
-// Generated 5/Mai/2014 15:56:04 by Hibernate Tools 4.0.0
+// Generated 7/Jun/2014 22:44:51 by Hibernate Tools 3.6.0
 
 import java.util.HashSet;
 import java.util.Set;
@@ -75,9 +75,8 @@ public class SensingDataValue implements java.io.Serializable {
 	public void setValueAddress(String valueAddress) {
 		this.valueAddress = valueAddress;
 	}
-	
-	//alterar valor disto novamente - default 45
-	@Column(name = "value", length = 900)
+
+	@Column(name = "value", length = 4500)
 	public String getValue() {
 		return this.value;
 	}

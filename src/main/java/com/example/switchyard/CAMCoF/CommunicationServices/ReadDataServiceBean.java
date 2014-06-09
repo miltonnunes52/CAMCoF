@@ -20,7 +20,10 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import com.entities.ProfileHome;
 import com.entities.SensingData;
+import com.entities.SensingDataHome;
+import com.entities.SensingDataId;
 import com.entities.SensorHome;
+import com.entities.UserProfileHome;
 import com.example.switchyard.CAMCoF.CommunicationServices.ReadDataService;
 import com.example.switchyard.CAMCoF.CommunicationServices.Objects.*;
 
@@ -35,7 +38,13 @@ public class ReadDataServiceBean implements ReadDataService {
     private ProfileHome profileHome;
 	
 	@EJB
+    private UserProfileHome userProfileHome;
+	
+	@EJB
     private SensorHome sensorHome;
+	
+	@EJB
+    private SensingDataHome sensingDataHome;
 	
 	@Inject
 	@Reference
@@ -77,8 +86,11 @@ public class ReadDataServiceBean implements ReadDataService {
 	public SensorServiceResponse connectService(SensorService sensorService) {
 		SensorServiceResponse serviceResponse;
 		
-		
-		if(existSensorService(sensorService)){
+		if(!userProfileHome.existByID(sensorService.getId())){
+			System.out.println("Username de utilizador nao existe");
+			serviceResponse = new SensorServiceResponse("409", "Conflict - Invalid username"); 	
+		}
+		else if(existSensorService(sensorService)){
 			serviceResponse = new SensorServiceResponse("409", "Conflict - Service already exists"); 
 			System.out.println("conflict 409");
 		}
@@ -125,6 +137,11 @@ public class ReadDataServiceBean implements ReadDataService {
 				outputStream.flush();
 
 				if (httpConnection.getResponseCode() != 200) {
+					SensingDataId sensingdataid = serviceList.get(k).getSensingDataId();
+					SensingData sensingData = sensingDataHome.findById(sensingdataid);
+					sensingData.setTimeEnd("horaencerramento");
+					sensingDataHome.merge(sensingData);
+					
 					serviceList.remove(serviceList.get(k));	
 					k--;
 					System.out.println("servico eliminado " + "Failed : HTTP error code : "
@@ -148,6 +165,11 @@ public class ReadDataServiceBean implements ReadDataService {
 				httpConnection.disconnect();
 				
 				if(!statusResponse.getResponse().equals("200")){
+					SensingDataId sensingdataid = serviceList.get(k).getSensingDataId();
+					SensingData sensingData = sensingDataHome.findById(sensingdataid);
+					sensingData.setTimeEnd("horaencerramento");
+					sensingDataHome.merge(sensingData);
+					
 					serviceList.remove(serviceList.get(k));		
 					System.out.println("servico eliminado");
 					k--;

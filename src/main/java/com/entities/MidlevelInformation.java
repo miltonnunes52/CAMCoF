@@ -1,6 +1,6 @@
 package com.entities;
 // default package
-// Generated 5/Mai/2014 15:56:04 by Hibernate Tools 4.0.0
+// Generated 7/Jun/2014 22:44:51 by Hibernate Tools 3.6.0
 
 import java.util.HashSet;
 import java.util.Set;
@@ -27,16 +27,15 @@ public class MidlevelInformation implements java.io.Serializable {
 	private DataContext dataContext;
 	private String description;
 	private String feature;
-//	private int highlevelInformationIdHighlevelInformation;
 	private Set<SensingData> sensingDatas = new HashSet<SensingData>(0);
 
 	public MidlevelInformation() {
 	}
 
-	public MidlevelInformation(DataContext dataContext, HighlevelInformation highlevelInformation) {
-		this.dataContext = dataContext;
-//		this.highlevelInformationIdHighlevelInformation = highlevelInformationIdHighlevelInformation;
+	public MidlevelInformation(HighlevelInformation highlevelInformation,
+			DataContext dataContext) {
 		this.highlevelInformation = highlevelInformation;
+		this.dataContext = dataContext;
 	}
 
 	public MidlevelInformation(HighlevelInformation highlevelInformation,
@@ -46,7 +45,6 @@ public class MidlevelInformation implements java.io.Serializable {
 		this.dataContext = dataContext;
 		this.description = description;
 		this.feature = feature;
-//		this.highlevelInformationIdHighlevelInformation = highlevelInformationIdHighlevelInformation;
 		this.sensingDatas = sensingDatas;
 	}
 
@@ -99,16 +97,6 @@ public class MidlevelInformation implements java.io.Serializable {
 	public void setFeature(String feature) {
 		this.feature = feature;
 	}
-
-//	@Column(name = "Highlevel-information_idHighlevel-information", nullable = false, updatable = false, insertable = false)
-//	public int getHighlevelInformationIdHighlevelInformation() {
-//		return this.highlevelInformationIdHighlevelInformation;
-//	}
-//
-//	public void setHighlevelInformationIdHighlevelInformation(
-//			int highlevelInformationIdHighlevelInformation) {
-//		this.highlevelInformationIdHighlevelInformation = highlevelInformationIdHighlevelInformation;
-//	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "midlevelInformation")
 	public Set<SensingData> getSensingDatas() {

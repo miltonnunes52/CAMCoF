@@ -7,17 +7,18 @@ public class SensorService {
 	private String id;
 	private String ip;
 	private String type;
+	private String sensorid;
 	private int period;
 	private String typedata;
 	private String description;
 	private SensingDataId sensingDataId;
-	private int sensorId;
 	
-	public SensorService(String id, String ip, String type, int period,
+	public SensorService(String id, String ip, String type, String sensorid, int period,
 			String typedata, String description) {
 		this.id = id;
 		this.ip = ip;
 		this.type = type;
+		this.sensorid = sensorid;
 		this.period = period;
 		this.typedata = typedata;
 		this.description = description;
@@ -32,11 +33,11 @@ public class SensorService {
 		this.id = service.getId();
 		this.ip = service.getIp();
 		this.type = service.getType();
+		this.sensorid = service.getSensorid();
 		this.period = service.getPeriod();
 		this.typedata = service.getTypedata();
 		this.description = service.getDescription();
 		this.sensingDataId = service.getSensingDataId();
-		this.sensorId = service.getSensorId();
 	}
 	
 	public String getId() {
@@ -95,12 +96,14 @@ public class SensorService {
 		this.sensingDataId = sensingDataId;
 	}
 
-	public int getSensorId() {
-		return sensorId;
+	
+
+	public String getSensorid() {
+		return sensorid;
 	}
 
-	public void setSensorId(int sensorId) {
-		this.sensorId = sensorId;
+	public void setSensorid(String sensorid) {
+		this.sensorid = sensorid;
 	}
 	
 	
