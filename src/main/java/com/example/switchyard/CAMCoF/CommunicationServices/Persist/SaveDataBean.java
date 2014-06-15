@@ -49,7 +49,7 @@ public class SaveDataBean implements SaveDataInterface {
 		sensingDataValue.setValueAddress("valueaddress");
 
 		sensingDataValueHome.merge(sensingDataValue);
-		//value units?!	de
+		//value units?!
 		
 		return dataObject;
 	}
@@ -61,11 +61,15 @@ public class SaveDataBean implements SaveDataInterface {
 		String targetURL = "http://islab.di.uminho.pt:36001/MetricsReport/rest/Metrics/";
 		
 
+		//get id sensing data respectivo
+		SensingDataId sensingDataId = dataObject.getSensingDataId();
+		SensingData sensingData = sensingDataHome.findById(sensingDataId);
+
 		
-		if(dataObject.getType().equals("keyboard")){
+		if(sensingData.getSensorNode().getSensor().getType().equals("keyboard")){
 			targetURL = targetURL.concat("keydowntime");
 		}
-		else if(dataObject.getType().equals("mouse")){
+		else if(sensingData.getSensorNode().getSensor().getType().equals("mouse")){
 			targetURL = targetURL.concat("mousevelocity");
 		}
 		
@@ -86,8 +90,6 @@ public class SaveDataBean implements SaveDataInterface {
 			
 			//get de todos os sensing data values
 			String sensingDataValues = "";
-			SensingDataId sensingDataId = dataObject.getSensingDataId();
-			SensingData sensingData = sensingDataHome.findById(sensingDataId);
 			for(SensingDataValue sensingDataValue : sensingData.getSensingDataValues()){
 				sensingDataValues = sensingDataValues.concat(sensingDataValue.getValue()).concat("\n");
 			}

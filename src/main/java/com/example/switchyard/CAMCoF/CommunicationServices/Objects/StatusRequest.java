@@ -4,7 +4,7 @@ public class StatusRequest {
 	
 	
 	private String id;
-	private String type;
+	private String sensorid;
 	private String status;
 	
 	
@@ -13,9 +13,9 @@ public class StatusRequest {
 	}
 	
 	
-	public StatusRequest(String id, String type, String status) {
+	public StatusRequest(String id, String sensorid, String status) {
 		this.id = id;
-		this.type = type;
+		this.sensorid = sensorid;
 		this.status = status;
 	}
 
@@ -25,11 +25,11 @@ public class StatusRequest {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String getType() {
-		return type;
+	public String getSensorid() {
+		return sensorid;
 	}
-	public void setType(String type) {
-		this.type = type;
+	public void setSensorid(String sensorid) {
+		this.sensorid = sensorid;
 	}
 	public String getStatus() {
 		return status;
@@ -41,7 +41,7 @@ public class StatusRequest {
 
 	@Override
 	public String toString() {
-		return "{\"id\":\"" + id + "\",\"type\":\"" + type + "\",\"status\":\""  + status + "\"}";
+		return "{\"id\":\"" + id + "\",\"sensorid\":\"" + sensorid + "\",\"status\":\""  + status + "\"}";
 	}
 	
 	

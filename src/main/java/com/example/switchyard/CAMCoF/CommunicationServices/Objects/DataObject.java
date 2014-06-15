@@ -5,13 +5,13 @@ import com.entities.SensingDataId;
 public class DataObject {
 	
 	private String id;
-	private String type;
+	private String sensorid;
 	private String data;
 	private SensingDataId sensingDataId;
 	
-	public DataObject(String id, String type, String data) {
+	public DataObject(String id, String sensorid, String data) {
 		this.id = id;
-		this.type = type;
+		this.sensorid = sensorid;
 		this.data = data;
 		this.setSensingDataId(null);
 	}
@@ -22,7 +22,7 @@ public class DataObject {
 	
 	public DataObject(DataObject dataObject){
 		this.id = dataObject.getId();
-		this.type = dataObject.getType();
+		this.sensorid = dataObject.getSensorid();
 		this.data = dataObject.getData();
 		this.sensingDataId = dataObject.getSensingDataId();
 		
@@ -45,12 +45,12 @@ public class DataObject {
 		this.id = id;
 	}
 	
-	public String getType() {
-		return type;
+	public String getSensorid() {
+		return sensorid;
 	}
 
-	public void setType(String type) {
-		this.id = type;
+	public void setSensorid(String sensorid) {
+		this.sensorid = sensorid;
 	}
 
 	public SensingDataId getSensingDataId() {

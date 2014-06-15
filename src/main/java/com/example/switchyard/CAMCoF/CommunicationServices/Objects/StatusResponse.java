@@ -3,13 +3,13 @@ package com.example.switchyard.CAMCoF.CommunicationServices.Objects;
 public class StatusResponse {
 	
 	private String id;
-	private String type;
+	private String sensorid;
 	private String response;
 	
-	public StatusResponse(String id, String type, String response) {
+	public StatusResponse(String id, String sensorid, String response) {
 		super();
 		this.id = id;
-		this.type = type;
+		this.sensorid = sensorid;
 		this.response = response;
 	}
 	
@@ -24,12 +24,12 @@ public class StatusResponse {
 		this.id = id;
 	}
 
-	public String getType() {
-		return type;
+	public String getSensorid() {
+		return sensorid;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setSensorid(String sensorid) {
+		this.sensorid = sensorid;
 	}
 
 	public String getResponse() {
@@ -42,7 +42,7 @@ public class StatusResponse {
 	
 	@Override
 	public String toString() {
-		return "{\"id\":\"" + id + "\",\"type\":\"" + type + "\",\"response\":\""  + response + "\"}";
+		return "{\"id\":\"" + id + "\",\"sensorid\":\"" + sensorid + "\",\"response\":\""  + response + "\"}";
 	}
 
 }

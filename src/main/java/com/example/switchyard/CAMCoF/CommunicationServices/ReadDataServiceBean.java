@@ -62,12 +62,12 @@ public class ReadDataServiceBean implements ReadDataService {
 	public DataResponse receiveData(DataObject dataObject){
 		DataResponse response;
 		
-		System.out.println(dataObject.getId() + " " + dataObject.getType() + " " + dataObject.getData());
+		System.out.println(dataObject.getId() + " " + dataObject.getSensorid() + " " + dataObject.getData());
 		
-		if(existSensorService(dataObject.getId(), dataObject.getType())){
+		if(existSensorService(dataObject.getId(), dataObject.getSensorid())){
 			
 			//gravar dados na BD
-			SensorService sensorServ = getSensorService(dataObject.getId(), dataObject.getType());
+			SensorService sensorServ = getSensorService(dataObject.getId(), dataObject.getSensorid());
 			dataObject.setSensingDataId(sensorServ.getSensingDataId());
 			saveDataService.saveData(dataObject);
 
@@ -95,7 +95,7 @@ public class ReadDataServiceBean implements ReadDataService {
 			System.out.println("conflict 409");
 		}
 		else{
-			serviceResponse = new SensorServiceResponse("200", "islab.di.uminho.pt/CAMCoF/send/" + sensorService.getId() + "/" + sensorService.getType());
+			serviceResponse = new SensorServiceResponse("200", "islab.di.uminho.pt/CAMCoF/send/" + sensorService.getId() + "/" + sensorService.getSensorid());
 			
 			//gravar dados na BD	
 			SensingData sensingData = saveSensingService.saveData(sensorService);
@@ -129,7 +129,7 @@ public class ReadDataServiceBean implements ReadDataService {
 				httpConnection.setConnectTimeout(10000);
 				httpConnection.setReadTimeout(10000);
 			
-				StatusRequest statusRequest = new StatusRequest(serviceList.get(k).getId(), serviceList.get(k).getType(), "status");
+				StatusRequest statusRequest = new StatusRequest(serviceList.get(k).getId(), serviceList.get(k).getSensorid(), "status");
 			
 				OutputStream outputStream = httpConnection.getOutputStream();
 			
@@ -159,7 +159,7 @@ public class ReadDataServiceBean implements ReadDataService {
 				System.out.println("Output from Server:");
 				while ((output = responseBuffer.readLine()) != null) {
 					statusResponse = new ObjectMapper().readValue(output, StatusResponse.class);
-					System.out.println(statusResponse.getId() + " " + statusResponse.getType() + " " + statusResponse.getResponse());
+					System.out.println(statusResponse.getId() + " " + statusResponse.getSensorid() + " " + statusResponse.getResponse());
 				}
 
 				httpConnection.disconnect();
@@ -189,46 +189,46 @@ public class ReadDataServiceBean implements ReadDataService {
 	@Override
 	public StatusResponse camcofPongProvisorio(StatusRequest statusRequest){
 
-		System.out.println(statusRequest.getId() + " " + statusRequest.getStatus()  + " " + statusRequest.getType());
-		return new StatusResponse(statusRequest.getId(), statusRequest.getType(), "200");
+		System.out.println(statusRequest.getId() + " " + statusRequest.getStatus()  + " " + statusRequest.getSensorid());
+		return new StatusResponse(statusRequest.getId(), statusRequest.getSensorid(), "200");
 		
 	}
 	//resposta temporaria ao ping
 	@Override
 	public StatusResponse camcofPongProvisorio1(StatusRequest statusRequest){
 
-		System.out.println(statusRequest.getId() + " " + statusRequest.getStatus()  + " " + statusRequest.getType());
-		return new StatusResponse(statusRequest.getId(), statusRequest.getType(), "201");
+		System.out.println(statusRequest.getId() + " " + statusRequest.getStatus()  + " " + statusRequest.getSensorid());
+		return new StatusResponse(statusRequest.getId(), statusRequest.getSensorid(), "201");
 		
 	}
 	
 	//Funcoes auxiliares
 	
 	
-	//Compara servicos mac address e tipo de sensor com existentes
+	//Compara servicos mac address e id de sensor com existentes
 	public boolean existSensorService(SensorService sensorService){
 		for (SensorService s : serviceList) {
-	        if (s.getId().equals(sensorService.getId()) && s.getType().equals(sensorService.getType())) {
+	        if (s.getId().equals(sensorService.getId()) && s.getSensorid().equals(sensorService.getSensorid())) {
 	            return true;
 	        }
 	    }
 		return false;		
 	}
 	
-	//Compara servicos mac address e tipo de sensor com existentes
-	public boolean existSensorService(String id, String type){
+	//Compara servicos mac address e id de sensor com existentes
+	public boolean existSensorService(String id, String sensorid){
 		for (SensorService s : serviceList) {
-	        if (s.getId().equals(id) && s.getType().equals(type)) {
+	        if (s.getId().equals(id) && s.getSensorid().equals(sensorid)) {
 	            return true;
 	        }
 	    }
 		return false;		
 	}
 	
-	//get sensor service by id and type
-	public SensorService getSensorService(String id, String type){
+	//get sensor service by id and id sensor
+	public SensorService getSensorService(String id, String sensorid){
 		for (SensorService s : serviceList) {
-	        if (s.getId().equals(id) && s.getType().equals(type)) {
+	        if (s.getId().equals(id) && s.getSensorid().equals(sensorid)) {
 	            return s;
 	        }
 	    }

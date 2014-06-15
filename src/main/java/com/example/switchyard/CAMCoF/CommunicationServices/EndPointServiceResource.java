@@ -21,10 +21,10 @@ public interface EndPointServiceResource {
 	
 	@POST
 	@ContextPath
-	@Path("{id}/{type}")
+	@Path("{id}/{sensorid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	DataResponse receiveData(@PathParam("id") String id,@PathParam("type") String type, String data);
+	DataResponse receiveData(@PathParam("id") String id,@PathParam("sensorid") String sensorid, String data);
 	
 	
 	@POST
