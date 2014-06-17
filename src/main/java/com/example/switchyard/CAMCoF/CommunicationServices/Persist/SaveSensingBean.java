@@ -1,7 +1,8 @@
 package com.example.switchyard.CAMCoF.CommunicationServices.Persist;
 
 
-import java.util.HashSet;
+
+import java.util.Date;
 
 import javax.ejb.EJB;
 
@@ -98,9 +99,10 @@ public class SaveSensingBean implements SaveSensingInterface {
 		
 		
 		sensingData.setId(new SensingDataId(sensorNode.getIdSensorNode()));
-		sensingData.setDescription("descriptionSensingData");
+		sensingData.setDescription("description Sensing Data");
 		sensingData.setResourceAddress(sensorNode.getAddress());
-		sensingData.setTimeCreation("horaadefinir");
+		sensingData.setTimeCreation(new Date().toString());
+		//sensingData.setTimeCreation("horaadefinir");
 		
 		sensingData = sensingDataHome.merge(sensingData);
 		
@@ -126,7 +128,7 @@ public class SaveSensingBean implements SaveSensingInterface {
 	public SensorService addNewSensor(SensorService sensorService) {
 		Sensor sensor = new Sensor();
 		sensor.setDataPeriodicity(Integer.toString(sensorService.getPeriod()));
-		sensor.setLocation("location");
+		sensor.setLocation("sensor location");
 		sensor.setType(sensorService.getType());
 		sensor.setSensorIdentifier(sensorService.getSensorid());
 		
@@ -146,7 +148,7 @@ public class SaveSensingBean implements SaveSensingInterface {
 		
 		SensorNode sensorNode = new SensorNode();
 		sensorNode.setAddress(sensorService.getIp());
-		sensorNode.setDescription("descriptionSensorNode");
+		sensorNode.setDescription("description sensor node");
 		sensorNode.setSensor(sensor);
 		
 		sensorNode = sensorNodeHome.merge(sensorNode);

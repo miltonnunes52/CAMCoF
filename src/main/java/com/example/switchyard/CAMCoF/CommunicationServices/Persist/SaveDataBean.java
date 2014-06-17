@@ -10,7 +10,6 @@ import java.net.URL;
 
 import javax.ejb.EJB;
 
-import org.codehaus.jackson.map.ObjectMapper;
 import org.switchyard.component.bean.Service;
 
 import com.entities.MidlevelInformation;
@@ -21,8 +20,6 @@ import com.entities.SensingDataId;
 import com.entities.SensingDataValue;
 import com.entities.SensingDataValueHome;
 import com.example.switchyard.CAMCoF.CommunicationServices.Objects.DataObject;
-import com.example.switchyard.CAMCoF.CommunicationServices.Objects.StatusRequest;
-import com.example.switchyard.CAMCoF.CommunicationServices.Objects.StatusResponse;
 
 @Service(SaveDataInterface.class)
 public class SaveDataBean implements SaveDataInterface {
@@ -46,7 +43,7 @@ public class SaveDataBean implements SaveDataInterface {
 
 		sensingDataValue.setSensingData(sensingData);
 		sensingDataValue.setValue(dataObject.getData());
-		sensingDataValue.setValueAddress("valueaddress");
+		sensingDataValue.setValueAddress("value address");
 
 		sensingDataValueHome.merge(sensingDataValue);
 		//value units?!

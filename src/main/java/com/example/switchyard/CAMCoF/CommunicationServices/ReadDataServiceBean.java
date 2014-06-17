@@ -10,6 +10,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Date;
 import java.util.ArrayList;
 
 import javax.ejb.EJB;
@@ -87,7 +88,6 @@ public class ReadDataServiceBean implements ReadDataService {
 		SensorServiceResponse serviceResponse;
 		
 		if(!userProfileHome.existByID(sensorService.getId())){
-			System.out.println("Username de utilizador nao existe");
 			serviceResponse = new SensorServiceResponse("409", "Conflict - Invalid username"); 	
 		}
 		else if(existSensorService(sensorService)){
@@ -95,7 +95,7 @@ public class ReadDataServiceBean implements ReadDataService {
 			System.out.println("conflict 409");
 		}
 		else{
-			serviceResponse = new SensorServiceResponse("200", "islab.di.uminho.pt/CAMCoF/send/" + sensorService.getId() + "/" + sensorService.getSensorid());
+			serviceResponse = new SensorServiceResponse("200", "islab.di.uminho.pt:36001/CAMCoF/send/" + sensorService.getId() + "/" + sensorService.getSensorid());
 			
 			//gravar dados na BD	
 			SensingData sensingData = saveSensingService.saveData(sensorService);
@@ -117,7 +117,6 @@ public class ReadDataServiceBean implements ReadDataService {
 		for(int k=0; k<serviceList.size(); k++) {
 		
 			String targetURL = serviceList.get(k).getIp();
-			//String targetURL = "http://127.0.0.1:8080/CAMCoF/send/teste";
 
 			try {
 
@@ -139,7 +138,7 @@ public class ReadDataServiceBean implements ReadDataService {
 				if (httpConnection.getResponseCode() != 200) {
 					SensingDataId sensingdataid = serviceList.get(k).getSensingDataId();
 					SensingData sensingData = sensingDataHome.findById(sensingdataid);
-					sensingData.setTimeEnd("horaencerramento");
+					sensingData.setTimeEnd(new Date().toString());
 					sensingDataHome.merge(sensingData);
 					
 					serviceList.remove(serviceList.get(k));	
@@ -167,7 +166,7 @@ public class ReadDataServiceBean implements ReadDataService {
 				if(!statusResponse.getResponse().equals("200")){
 					SensingDataId sensingdataid = serviceList.get(k).getSensingDataId();
 					SensingData sensingData = sensingDataHome.findById(sensingdataid);
-					sensingData.setTimeEnd("horaencerramento");
+					sensingData.setTimeEnd(new Date().toString());
 					sensingDataHome.merge(sensingData);
 					
 					serviceList.remove(serviceList.get(k));		
