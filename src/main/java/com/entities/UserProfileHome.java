@@ -1,14 +1,12 @@
 package com.entities;
 // default package
-// Generated 7/Jun/2014 22:44:51 by Hibernate Tools 3.6.0
+// Generated 20/Jun/2014 17:25:12 by Hibernate Tools 3.6.0
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.Query;
 
 /**
  * Home object for domain model class UserProfile.
@@ -89,6 +87,6 @@ public class UserProfileHome {
 		if (i == 0) return false;
 		return true;
 	}
-	
-	
+
+
 }

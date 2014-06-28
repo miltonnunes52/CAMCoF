@@ -1,11 +1,10 @@
 package com.entities;
 // default package
-// Generated 7/Jun/2014 22:44:51 by Hibernate Tools 3.6.0
+// Generated 20/Jun/2014 17:25:12 by Hibernate Tools 3.6.0
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -68,18 +67,6 @@ public class SensorHome {
 		}
 	}
 	
-	public boolean existByID(Integer id) {
-		log.debug("getting Sensor instance with id: " + id);
-		try {
-			Sensor instance = entityManager.find(Sensor.class, id);
-			log.debug("get successful");
-			return true;
-		} catch (RuntimeException re) {
-			log.error("get failed", re);
-			return false;
-		}
-	}
-	
 	public boolean existByIdentifier(String id) {
 		Long i =  (Long) entityManager.createQuery("SELECT COUNT(*) FROM Sensor WHERE sensorIdentifier = :sensorIdentifier")
 				.setParameter("sensorIdentifier", id).getSingleResult();
@@ -100,6 +87,4 @@ public class SensorHome {
 			throw re;
 		}
 	}
-	
-	
 }

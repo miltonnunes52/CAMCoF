@@ -3,6 +3,7 @@ package com.example.switchyard.CAMCoF.CommunicationServices.Persist;
 
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.ejb.EJB;
 
@@ -14,6 +15,7 @@ import com.entities.DataContext;
 import com.entities.DataContextHome;
 import com.entities.HighlevelInformation;
 import com.entities.HighlevelInformationHome;
+import com.entities.MetricsHome;
 import com.entities.MidlevelInformation;
 import com.entities.MidlevelInformationHome;
 import com.entities.SensingData;
@@ -26,6 +28,8 @@ import com.entities.SensorNodeHome;
 import com.entities.TransformationLevel;
 import com.entities.TransformationLevelHome;
 import com.entities.UserProfile;
+import com.entities.Metrics;
+import com.entities.MetricsHome;
 import com.entities.UserProfileHome;
 import com.example.switchyard.CAMCoF.CommunicationServices.Objects.SensorService;
 
@@ -59,6 +63,9 @@ public class SaveSensingBean implements SaveSensingInterface {
 	@EJB
 	private SensingDataHome sensingDataHome;
 	
+	@EJB
+	private MetricsHome metricsHome;
+	
 
 	@Override
 	public SensingData addSensingData(SensorService sensorService) {
@@ -72,16 +79,6 @@ public class SaveSensingBean implements SaveSensingInterface {
 		//datacontext definido por default
 		DataContext dt = dataContextHome.findById(1);
 		sensingData.setDataContext(dt);
-		
-		//criar level information
-		//HighlevelInformation hli = new HighlevelInformation(dt);
-		//hli = highlevelInformationHome.merge(hli);
-		HighlevelInformation hli = highlevelInformationHome.findById(1);
-				
-		MidlevelInformation mli = new MidlevelInformation(hli, dt);
-		mli = midlevelInformationHome.merge(mli);
-		sensingData.setMidlevelInformation(mli);
-		
 		
 		
 		//valores definidos por default temporariamente
@@ -108,6 +105,37 @@ public class SaveSensingBean implements SaveSensingInterface {
 		
 		//get e actualiza o idsensing
 		sensingData.getId().setIdSensing(sensingDataHome.getIdSensing(sensorNode));
+		
+
+		
+
+		
+		
+		
+		
+		
+		//actualizar lista de midlevelinformations do sensingData
+		
+		
+		//criar level information
+		HighlevelInformation hli = highlevelInformationHome.findById(1);
+		
+		
+		
+		//criar midlevel informations para todos as metricas existente deste tipo de sensor
+		for(Metrics metrics: metricsHome.findByType(sensorService.getType())){
+			MidlevelInformation mli = new MidlevelInformation(hli, sensingData, dt, metrics);
+			mli = midlevelInformationHome.merge(mli);	
+		}
+		
+		
+		
+		
+		
+		sensingData = sensingDataHome.findById(sensingData.getId());
+		System.out.println("size of midlevelinformationlevels: "+ sensingData.getMidlevelInformations().size());
+				
+		
 		
 		return sensingData;
 		

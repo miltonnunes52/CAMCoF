@@ -1,9 +1,7 @@
 package com.entities;
 // default package
-// Generated 7/Jun/2014 22:44:51 by Hibernate Tools 3.6.0
+// Generated 20/Jun/2014 17:25:12 by Hibernate Tools 3.6.0
 
-import java.util.HashSet;
-import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,8 +9,8 @@ import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -24,28 +22,32 @@ public class MidlevelInformation implements java.io.Serializable {
 
 	private Integer idMidlevelInformation;
 	private HighlevelInformation highlevelInformation;
+	private SensingData sensingData;
 	private DataContext dataContext;
+	private Metrics metrics;
 	private String description;
 	private String feature;
-	private Set<SensingData> sensingDatas = new HashSet<SensingData>(0);
 
 	public MidlevelInformation() {
 	}
 
 	public MidlevelInformation(HighlevelInformation highlevelInformation,
-			DataContext dataContext) {
+			SensingData sensingData, DataContext dataContext, Metrics metrics) {
 		this.highlevelInformation = highlevelInformation;
+		this.sensingData = sensingData;
 		this.dataContext = dataContext;
+		this.metrics = metrics;
 	}
 
 	public MidlevelInformation(HighlevelInformation highlevelInformation,
-			DataContext dataContext, String description, String feature,
-			Set<SensingData> sensingDatas) {
+			SensingData sensingData, DataContext dataContext, Metrics metrics,
+			String description, String feature) {
 		this.highlevelInformation = highlevelInformation;
+		this.sensingData = sensingData;
 		this.dataContext = dataContext;
+		this.metrics = metrics;
 		this.description = description;
 		this.feature = feature;
-		this.sensingDatas = sensingDatas;
 	}
 
 	@Id
@@ -71,6 +73,18 @@ public class MidlevelInformation implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumns({
+			@JoinColumn(name = "Sensing_data_idSensing", referencedColumnName = "idSensing", nullable = false),
+			@JoinColumn(name = "Sensing_data_Sensor_node_idSensor_node", referencedColumnName = "Sensor_node_idSensor_node", nullable = false) })
+	public SensingData getSensingData() {
+		return this.sensingData;
+	}
+
+	public void setSensingData(SensingData sensingData) {
+		this.sensingData = sensingData;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "Data_context_idData_context", nullable = false)
 	public DataContext getDataContext() {
 		return this.dataContext;
@@ -78,6 +92,16 @@ public class MidlevelInformation implements java.io.Serializable {
 
 	public void setDataContext(DataContext dataContext) {
 		this.dataContext = dataContext;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "Metrics_idMetrics", nullable = false)
+	public Metrics getMetrics() {
+		return this.metrics;
+	}
+
+	public void setMetrics(Metrics metrics) {
+		this.metrics = metrics;
 	}
 
 	@Column(name = "description", length = 45)
@@ -96,15 +120,6 @@ public class MidlevelInformation implements java.io.Serializable {
 
 	public void setFeature(String feature) {
 		this.feature = feature;
-	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "midlevelInformation")
-	public Set<SensingData> getSensingDatas() {
-		return this.sensingDatas;
-	}
-
-	public void setSensingDatas(Set<SensingData> sensingDatas) {
-		this.sensingDatas = sensingDatas;
 	}
 
 }

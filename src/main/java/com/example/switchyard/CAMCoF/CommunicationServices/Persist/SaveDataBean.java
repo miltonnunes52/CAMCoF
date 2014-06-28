@@ -7,11 +7,19 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.ejb.EJB;
 
+import org.apache.commons.collections.map.HashedMap;
 import org.switchyard.component.bean.Service;
 
+import com.entities.Metrics;
+import com.entities.MetricsHome;
 import com.entities.MidlevelInformation;
 import com.entities.MidlevelInformationHome;
 import com.entities.SensingData;
@@ -19,6 +27,8 @@ import com.entities.SensingDataHome;
 import com.entities.SensingDataId;
 import com.entities.SensingDataValue;
 import com.entities.SensingDataValueHome;
+import com.entities.Sensor;
+import com.entities.SensorHome;
 import com.example.switchyard.CAMCoF.CommunicationServices.Objects.DataObject;
 
 @Service(SaveDataInterface.class)
@@ -32,6 +42,10 @@ public class SaveDataBean implements SaveDataInterface {
 
 	@EJB
 	private MidlevelInformationHome midlevelInformationHome;
+
+	@EJB
+	private MetricsHome metricsHome;
+	
 	
 	@Override
 	public DataObject persistData(DataObject dataObject) {
@@ -55,70 +69,76 @@ public class SaveDataBean implements SaveDataInterface {
 	
 	@Override
 	public DataObject processData(DataObject dataObject) {
-		String targetURL = "http://islab.di.uminho.pt:36001/MetricsReport/rest/Metrics/";
-		
 
+		
 		//get id sensing data respectivo
 		SensingDataId sensingDataId = dataObject.getSensingDataId();
 		SensingData sensingData = sensingDataHome.findById(sensingDataId);
-
 		
-		if(sensingData.getSensorNode().getSensor().getType().equals("keyboard")){
-			targetURL = targetURL.concat("keydowntime");
+		
+		List<Metrics> metricsList = metricsHome.findByType(sensingData.getSensorNode().getSensor().getType());
+
+		Map<String, String> metricsResult = new HashMap<String, String>();
+		
+		//get de todos os sensing data values
+		String sensingDataValues = "";
+
+		for(String st : sensingDataValueHome.getDataValues(sensingDataId)){
+			sensingDataValues = sensingDataValues.concat(st.concat("\n"));
 		}
-		else if(sensingData.getSensorNode().getSensor().getType().equals("mouse")){
-			targetURL = targetURL.concat("mousevelocity");
+		
+		for(Metrics metric : metricsList){
+		
+			try {
+	
+				URL targetUrl = new URL(metric.getUrl());
+				HttpURLConnection httpConnection = (HttpURLConnection) targetUrl.openConnection();
+				httpConnection.setDoOutput(true);
+				httpConnection.setRequestMethod("POST");
+				httpConnection.setRequestProperty("Content-Type", "text/plain");
+				httpConnection.setConnectTimeout(10000);
+				httpConnection.setReadTimeout(10000);
+			
+			
+				OutputStream outputStream = httpConnection.getOutputStream();
+			
+				
+				
+				
+				System.out.println("input server: " + sensingDataValues);
+				outputStream.write(sensingDataValues.getBytes());
+				outputStream.flush();
+	
+				
+	
+				BufferedReader responseBuffer = new BufferedReader(new InputStreamReader(
+					(httpConnection.getInputStream())));
+	
+			
+				String output;
+				System.out.println("Output from Server:");
+				output = responseBuffer.readLine();
+				System.out.println(output);
+				
+				httpConnection.disconnect();
+				
+				
+				metricsResult.put(metric.getIdMetrics().toString(), output);
+				dataObject.setMetricsResults(metricsResult);
+	
+				} catch (MalformedURLException e) {
+					e.printStackTrace();
+					return null;
+				} catch (IOException e) {
+					e.printStackTrace();
+					return null;
+				}
+			
 		}
 		
 		
-		try {
+		return dataObject;
 
-			URL targetUrl = new URL(targetURL);
-			HttpURLConnection httpConnection = (HttpURLConnection) targetUrl.openConnection();
-			httpConnection.setDoOutput(true);
-			httpConnection.setRequestMethod("POST");
-			httpConnection.setRequestProperty("Content-Type", "text/plain");
-			httpConnection.setConnectTimeout(10000);
-			httpConnection.setReadTimeout(10000);
-		
-		
-			OutputStream outputStream = httpConnection.getOutputStream();
-		
-			
-			//get de todos os sensing data values
-			String sensingDataValues = "";
-			for(SensingDataValue sensingDataValue : sensingData.getSensingDataValues()){
-				sensingDataValues = sensingDataValues.concat(sensingDataValue.getValue()).concat("\n");
-			}
-			
-			System.out.println("input server: " + sensingDataValues);
-			outputStream.write(sensingDataValues.getBytes());
-			outputStream.flush();
-
-			
-
-			BufferedReader responseBuffer = new BufferedReader(new InputStreamReader(
-				(httpConnection.getInputStream())));
-
-		
-			String output;
-			System.out.println("Output from Server:");
-			output = responseBuffer.readLine();
-			System.out.println(output);
-			
-			httpConnection.disconnect();
-			
-			dataObject.setData(output);
-			return dataObject;
-			
-
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-				return null;
-			} catch (IOException e) {
-				e.printStackTrace();
-				return null;
-			}
 	}
 
 
@@ -128,12 +148,17 @@ public class SaveDataBean implements SaveDataInterface {
 		//get id sensing data respectivo
 		SensingDataId sensingDataId = dataObject.getSensingDataId();
 		SensingData sensingData = sensingDataHome.findById(sensingDataId);
-	
-		MidlevelInformation midLevelInformation = sensingData.getMidlevelInformation();
 		
-		midLevelInformation.setDescription(dataObject.getData());
+		Set<MidlevelInformation> midlevelInformations = sensingData.getMidlevelInformations();
 		
-		midlevelInformationHome.merge(midLevelInformation);
+		for(MidlevelInformation midlevelinformation : midlevelInformations){
+			midlevelinformation.setDescription(midlevelinformation.getMetrics().getDescription());
+			midlevelinformation.setFeature(dataObject.getMetricsResults().get(midlevelinformation.getMetrics().getIdMetrics().toString()));
+		}
+		sensingData.setMidlevelInformations(midlevelInformations);
+		
+		sensingData = sensingDataHome.merge(sensingData);
+			
 		
 	}
 	

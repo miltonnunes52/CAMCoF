@@ -1,5 +1,8 @@
 package com.example.switchyard.CAMCoF.CommunicationServices.Objects;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.entities.SensingDataId;
 
 public class DataObject {
@@ -8,6 +11,7 @@ public class DataObject {
 	private String sensorid;
 	private String data;
 	private SensingDataId sensingDataId;
+	private Map<String, String> metricsResults = new HashMap<String, String>(0);
 	
 	public DataObject(String id, String sensorid, String data) {
 		this.id = id;
@@ -59,6 +63,14 @@ public class DataObject {
 
 	public void setSensingDataId(SensingDataId sensingDataId) {
 		this.sensingDataId = sensingDataId;
+	}
+
+	public Map<String, String> getMetricsResults() {
+		return metricsResults;
+	}
+
+	public void setMetricsResults(Map<String, String> metricsResults) {
+		this.metricsResults = metricsResults;
 	}
 	
 	

@@ -1,6 +1,6 @@
 package com.entities;
 // default package
-// Generated 7/Jun/2014 22:44:51 by Hibernate Tools 3.6.0
+// Generated 20/Jun/2014 17:25:12 by Hibernate Tools 3.6.0
 
 import java.util.HashSet;
 import java.util.Set;
@@ -25,7 +25,6 @@ public class SensingData implements java.io.Serializable {
 	private SensingDataId id;
 	private UserProfile userProfile;
 	private TransformationLevel transformationLevel;
-	private MidlevelInformation midlevelInformation;
 	private DataContext dataContext;
 	private SensorNode sensorNode;
 	private ClassificationTags classificationTags;
@@ -33,6 +32,8 @@ public class SensingData implements java.io.Serializable {
 	private String description;
 	private String resourceAddress;
 	private String timeEnd;
+	private Set<MidlevelInformation> midlevelInformations = new HashSet<MidlevelInformation>(
+			0);
 	private Set<SensingDataValue> sensingDataValues = new HashSet<SensingDataValue>(
 			0);
 
@@ -40,28 +41,25 @@ public class SensingData implements java.io.Serializable {
 	}
 
 	public SensingData(SensingDataId id, UserProfile userProfile,
-			TransformationLevel transformationLevel,
-			MidlevelInformation midlevelInformation, DataContext dataContext,
+			TransformationLevel transformationLevel, DataContext dataContext,
 			SensorNode sensorNode, ClassificationTags classificationTags) {
 		this.id = id;
 		this.userProfile = userProfile;
 		this.transformationLevel = transformationLevel;
-		this.midlevelInformation = midlevelInformation;
 		this.dataContext = dataContext;
 		this.sensorNode = sensorNode;
 		this.classificationTags = classificationTags;
 	}
 
 	public SensingData(SensingDataId id, UserProfile userProfile,
-			TransformationLevel transformationLevel,
-			MidlevelInformation midlevelInformation, DataContext dataContext,
+			TransformationLevel transformationLevel, DataContext dataContext,
 			SensorNode sensorNode, ClassificationTags classificationTags,
 			String timeCreation, String description, String resourceAddress,
-			String timeEnd, Set<SensingDataValue> sensingDataValues) {
+			String timeEnd, Set<MidlevelInformation> midlevelInformations,
+			Set<SensingDataValue> sensingDataValues) {
 		this.id = id;
 		this.userProfile = userProfile;
 		this.transformationLevel = transformationLevel;
-		this.midlevelInformation = midlevelInformation;
 		this.dataContext = dataContext;
 		this.sensorNode = sensorNode;
 		this.classificationTags = classificationTags;
@@ -69,6 +67,7 @@ public class SensingData implements java.io.Serializable {
 		this.description = description;
 		this.resourceAddress = resourceAddress;
 		this.timeEnd = timeEnd;
+		this.midlevelInformations = midlevelInformations;
 		this.sensingDataValues = sensingDataValues;
 	}
 
@@ -102,16 +101,6 @@ public class SensingData implements java.io.Serializable {
 
 	public void setTransformationLevel(TransformationLevel transformationLevel) {
 		this.transformationLevel = transformationLevel;
-	}
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "Midlevel_information_idMidlevel_information", nullable = false)
-	public MidlevelInformation getMidlevelInformation() {
-		return this.midlevelInformation;
-	}
-
-	public void setMidlevelInformation(MidlevelInformation midlevelInformation) {
-		this.midlevelInformation = midlevelInformation;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -178,6 +167,16 @@ public class SensingData implements java.io.Serializable {
 
 	public void setTimeEnd(String timeEnd) {
 		this.timeEnd = timeEnd;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "sensingData")
+	public Set<MidlevelInformation> getMidlevelInformations() {
+		return this.midlevelInformations;
+	}
+
+	public void setMidlevelInformations(
+			Set<MidlevelInformation> midlevelInformations) {
+		this.midlevelInformations = midlevelInformations;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "sensingData")

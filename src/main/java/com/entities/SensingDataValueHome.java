@@ -1,10 +1,13 @@
 package com.entities;
 // default package
-// Generated 7/Jun/2014 22:44:51 by Hibernate Tools 3.6.0
+// Generated 20/Jun/2014 17:25:12 by Hibernate Tools 3.6.0
+
+import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -67,5 +70,13 @@ public class SensingDataValueHome {
 			log.error("get failed", re);
 			throw re;
 		}
+	}
+	
+	public List<String> getDataValues(SensingDataId sensingDataId){
+
+		List<String> resultlist =  entityManager.createQuery("SELECT value FROM SensingDataValue WHERE Sensing_idSensing = :idsensing and Sensing_idSensor_node = :idsensornode")
+			.setParameter("idsensing", sensingDataId.getIdSensing()).setParameter("idsensornode", sensingDataId.getSensorNodeIdSensorNode()).getResultList();
+
+		return resultlist;
 	}
 }
