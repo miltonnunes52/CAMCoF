@@ -7,7 +7,6 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +14,6 @@ import java.util.Set;
 
 import javax.ejb.EJB;
 
-import org.apache.commons.collections.map.HashedMap;
 import org.switchyard.component.bean.Service;
 
 import com.entities.Metrics;
@@ -27,8 +25,7 @@ import com.entities.SensingDataHome;
 import com.entities.SensingDataId;
 import com.entities.SensingDataValue;
 import com.entities.SensingDataValueHome;
-import com.entities.Sensor;
-import com.entities.SensorHome;
+import com.entities.TransformationLevelHome;
 import com.example.switchyard.CAMCoF.CommunicationServices.Objects.DataObject;
 
 @Service(SaveDataInterface.class)
@@ -46,6 +43,9 @@ public class SaveDataBean implements SaveDataInterface {
 	@EJB
 	private MetricsHome metricsHome;
 	
+	@EJB
+	private TransformationLevelHome transformationLevelHome;
+	
 	
 	@Override
 	public DataObject persistData(DataObject dataObject) {
@@ -57,7 +57,7 @@ public class SaveDataBean implements SaveDataInterface {
 
 		sensingDataValue.setSensingData(sensingData);
 		sensingDataValue.setValue(dataObject.getData());
-		sensingDataValue.setValueAddress("value address");
+		sensingDataValue.setValueAddress(sensingData.getResourceAddress());
 
 		sensingDataValueHome.merge(sensingDataValue);
 		//value units?!
@@ -156,6 +156,7 @@ public class SaveDataBean implements SaveDataInterface {
 			midlevelinformation.setFeature(dataObject.getMetricsResults().get(midlevelinformation.getMetrics().getIdMetrics().toString()));
 		}
 		sensingData.setMidlevelInformations(midlevelInformations);
+		sensingData.setTransformationLevel(transformationLevelHome.findById(2));
 		
 		sensingData = sensingDataHome.merge(sensingData);
 			

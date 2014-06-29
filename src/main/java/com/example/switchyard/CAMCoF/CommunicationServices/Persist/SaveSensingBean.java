@@ -3,7 +3,6 @@ package com.example.switchyard.CAMCoF.CommunicationServices.Persist;
 
 
 import java.util.Date;
-import java.util.Set;
 
 import javax.ejb.EJB;
 
@@ -29,7 +28,6 @@ import com.entities.TransformationLevel;
 import com.entities.TransformationLevelHome;
 import com.entities.UserProfile;
 import com.entities.Metrics;
-import com.entities.MetricsHome;
 import com.entities.UserProfileHome;
 import com.example.switchyard.CAMCoF.CommunicationServices.Objects.SensorService;
 
@@ -76,15 +74,17 @@ public class SaveSensingBean implements SaveSensingInterface {
 		int idSensorNode = sensorService.getSensingDataId().getSensorNodeIdSensorNode();
 		SensorNode sensorNode = sensorNodeHome.findById(idSensorNode);
 		
-		//datacontext definido por default
+		//datacontext definido por default - experiencia real
 		DataContext dt = dataContextHome.findById(1);
 		sensingData.setDataContext(dt);
 		
 		
-		//valores definidos por default temporariamente
+		//valores definidos por default
 		ClassificationTags cltags = classificationTagsHome.findById(1);
 		sensingData.setClassificationTags(cltags);
 		sensingData.setSensorNode(sensorNode);
+		
+		//valores transformationlevel
 		TransformationLevel tl = transformationLevelHome.findById(1);
 		sensingData.setTransformationLevel(tl);
 		
@@ -94,51 +94,29 @@ public class SaveSensingBean implements SaveSensingInterface {
 		sensingData.setUserProfile(up);
 				
 		
-		
 		sensingData.setId(new SensingDataId(sensorNode.getIdSensorNode()));
-		sensingData.setDescription("description Sensing Data");
+		sensingData.setDescription("");
 		sensingData.setResourceAddress(sensorNode.getAddress());
 		sensingData.setTimeCreation(new Date().toString());
-		//sensingData.setTimeCreation("horaadefinir");
 		
 		sensingData = sensingDataHome.merge(sensingData);
 		
 		//get e actualiza o idsensing
 		sensingData.getId().setIdSensing(sensingDataHome.getIdSensing(sensorNode));
-		
 
-		
-
-		
-		
-		
-		
-		
-		//actualizar lista de midlevelinformations do sensingData
-		
 		
 		//criar level information
 		HighlevelInformation hli = highlevelInformationHome.findById(1);
 		
-		
-		
 		//criar midlevel informations para todos as metricas existente deste tipo de sensor
-		for(Metrics metrics: metricsHome.findByType(sensorService.getType())){
+		for(Metrics metrics: metricsHome.findByType(sensingData.getSensorNode().getSensor().getType())){
 			MidlevelInformation mli = new MidlevelInformation(hli, sensingData, dt, metrics);
 			mli = midlevelInformationHome.merge(mli);	
 		}
 		
-		
-		
-		
-		
 		sensingData = sensingDataHome.findById(sensingData.getId());
-		System.out.println("size of midlevelinformationlevels: "+ sensingData.getMidlevelInformations().size());
-				
-		
 		
 		return sensingData;
-		
 	}
 
 	@Override
@@ -156,9 +134,9 @@ public class SaveSensingBean implements SaveSensingInterface {
 	public SensorService addNewSensor(SensorService sensorService) {
 		Sensor sensor = new Sensor();
 		sensor.setDataPeriodicity(Integer.toString(sensorService.getPeriod()));
-		sensor.setLocation("sensor location");
 		sensor.setType(sensorService.getType());
 		sensor.setSensorIdentifier(sensorService.getSensorid());
+		sensor.setLocation("");
 		
 		sensor = sensorHome.merge(sensor);
 		
@@ -176,8 +154,8 @@ public class SaveSensingBean implements SaveSensingInterface {
 		
 		SensorNode sensorNode = new SensorNode();
 		sensorNode.setAddress(sensorService.getIp());
-		sensorNode.setDescription("description sensor node");
 		sensorNode.setSensor(sensor);
+		sensorNode.setDescription("");
 		
 		sensorNode = sensorNodeHome.merge(sensorNode);
 		

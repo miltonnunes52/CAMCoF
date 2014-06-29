@@ -184,7 +184,7 @@ public class ReadDataServiceBean implements ReadDataService {
 	}	 	
 	
 	
-	//resposta temporaria ao ping
+	//resposta temporaria ao ping - apenas para testar
 	@Override
 	public StatusResponse camcofPongProvisorio(StatusRequest statusRequest){
 
@@ -192,7 +192,7 @@ public class ReadDataServiceBean implements ReadDataService {
 		return new StatusResponse(statusRequest.getId(), statusRequest.getSensorid(), "200");
 		
 	}
-	//resposta temporaria ao ping
+	//resposta temporaria ao ping - apenas para testar
 	@Override
 	public StatusResponse camcofPongProvisorio1(StatusRequest statusRequest){
 
