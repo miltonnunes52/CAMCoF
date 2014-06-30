@@ -1,10 +1,7 @@
 package com.example.switchyard.CAMCoF.CommunicationServices.Objects;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import com.entities.SensingDataId;
-import com.entities.SensingDataValue;
+
 
 public class SensorService {
 	

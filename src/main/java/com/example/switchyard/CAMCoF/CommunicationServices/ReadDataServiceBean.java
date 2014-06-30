@@ -1,8 +1,5 @@
 package com.example.switchyard.CAMCoF.CommunicationServices;
 
-
-
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;

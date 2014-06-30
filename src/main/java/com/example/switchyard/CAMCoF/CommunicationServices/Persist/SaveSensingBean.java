@@ -76,8 +76,7 @@ public class SaveSensingBean implements SaveSensingInterface {
 		
 		//datacontext definido por default - experiencia real
 		DataContext dt = dataContextHome.findById(1);
-		sensingData.setDataContext(dt);
-		
+		sensingData.setDataContext(dt);	
 		
 		//valores definidos por default
 		ClassificationTags cltags = classificationTagsHome.findById(1);
@@ -86,13 +85,11 @@ public class SaveSensingBean implements SaveSensingInterface {
 		
 		//valores transformationlevel
 		TransformationLevel tl = transformationLevelHome.findById(1);
-		sensingData.setTransformationLevel(tl);
-		
+		sensingData.setTransformationLevel(tl);	
 		
 		UserProfile up = userProfileHome.findByUsername(sensorService.getId());
 		System.out.println("UserProfile: " + up.getIdUserProfile());
-		sensingData.setUserProfile(up);
-				
+		sensingData.setUserProfile(up);				
 		
 		sensingData.setId(new SensingDataId(sensorNode.getIdSensorNode()));
 		sensingData.setDescription("");
@@ -103,7 +100,6 @@ public class SaveSensingBean implements SaveSensingInterface {
 		
 		//get e actualiza o idsensing
 		sensingData.getId().setIdSensing(sensingDataHome.getIdSensing(sensorNode));
-
 		
 		//criar level information
 		HighlevelInformation hli = highlevelInformationHome.findById(1);
@@ -120,12 +116,10 @@ public class SaveSensingBean implements SaveSensingInterface {
 	}
 
 	@Override
-	public boolean verifySensor(SensorService sensorService) {
-		
+	public boolean verifySensor(SensorService sensorService) {		
 		String id = sensorService.getSensorid();
 		if(sensorHome.existByIdentifier(id)){
-			return true;
-			
+			return true;		
 		}
 		return false;
 	}
@@ -140,10 +134,7 @@ public class SaveSensingBean implements SaveSensingInterface {
 		
 		sensor = sensorHome.merge(sensor);
 		
-		
-		
-		return sensorService;
-				
+		return sensorService;		
 	}
 
 	@Override

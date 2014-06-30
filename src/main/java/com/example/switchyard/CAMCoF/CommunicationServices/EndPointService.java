@@ -11,7 +11,5 @@ public interface EndPointService {
 	void camcofPing();
 	StatusResponse camcofPongProvisorio(StatusRequest statusRequest);
 	StatusResponse camcofPongProvisorio1(StatusRequest statusRequest);
-	
-	
 
 }

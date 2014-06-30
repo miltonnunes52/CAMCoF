@@ -69,12 +69,10 @@ public class SaveDataBean implements SaveDataInterface {
 	
 	@Override
 	public DataObject processData(DataObject dataObject) {
-
 		
 		//get id sensing data respectivo
 		SensingDataId sensingDataId = dataObject.getSensingDataId();
-		SensingData sensingData = sensingDataHome.findById(sensingDataId);
-		
+		SensingData sensingData = sensingDataHome.findById(sensingDataId);	
 		
 		List<Metrics> metricsList = metricsHome.findByType(sensingData.getSensorNode().getSensor().getType());
 
@@ -99,29 +97,21 @@ public class SaveDataBean implements SaveDataInterface {
 				httpConnection.setConnectTimeout(10000);
 				httpConnection.setReadTimeout(10000);
 			
-			
 				OutputStream outputStream = httpConnection.getOutputStream();
-			
-				
-				
 				
 				System.out.println("input server: " + sensingDataValues);
 				outputStream.write(sensingDataValues.getBytes());
 				outputStream.flush();
 	
-				
-	
 				BufferedReader responseBuffer = new BufferedReader(new InputStreamReader(
 					(httpConnection.getInputStream())));
 	
-			
 				String output;
 				System.out.println("Output from Server:");
 				output = responseBuffer.readLine();
 				System.out.println(output);
 				
-				httpConnection.disconnect();
-				
+				httpConnection.disconnect();		
 				
 				metricsResult.put(metric.getIdMetrics().toString(), output);
 				dataObject.setMetricsResults(metricsResult);
@@ -135,7 +125,6 @@ public class SaveDataBean implements SaveDataInterface {
 				}
 			
 		}
-		
 		
 		return dataObject;
 
@@ -159,7 +148,6 @@ public class SaveDataBean implements SaveDataInterface {
 		sensingData.setTransformationLevel(transformationLevelHome.findById(2));
 		
 		sensingData = sensingDataHome.merge(sensingData);
-			
 		
 	}
 	
