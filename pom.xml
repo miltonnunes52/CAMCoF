@@ -4,19 +4,14 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.example.switchyard</groupId>
   <artifactId>CAMCoF</artifactId>
+  <packaging>war</packaging>
   <version>0.0.1-SNAPSHOT</version>
   <name>com.example.switchyard:CAMCoF</name>
   <properties>
     <switchyard.version>1.1.0.Final</switchyard.version>
   </properties>
-
-  
   <dependencies>
-  
- 
- 
- 
- <dependency>
+  <dependency>
 	<groupId>javax</groupId>
 	<artifactId>javaee-api</artifactId>
 	<version>7.0</version>
@@ -143,7 +138,25 @@
     </dependency>
   </dependencies>
   <build>
+    <finalName>CAMCoF</finalName>
     <plugins>
+    <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.0.2</version>
+                <configuration>
+                    <webResources>
+                        <resource>
+                            <targetPath>WEB-INF</targetPath>
+                            <directory>WebContent/WEB-INF</directory>
+                            <filtering>true</filtering>
+                            <includes>
+                                <include>*.xml</include>
+                            </includes>
+                        </resource>
+                    </webResources>
+                </configuration>
+            </plugin>
       <plugin>
         <groupId>org.switchyard</groupId>
         <artifactId>switchyard-plugin</artifactId>
